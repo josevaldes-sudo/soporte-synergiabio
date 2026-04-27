@@ -7,75 +7,60 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body class="bg-slate-50 font-sans">
-    <div class="container mx-auto px-4 py-16">
-        <div class="max-w-2xl mx-auto bg-white rounded-[2rem] shadow-2xl p-8 md:p-12 border border-slate-100">
-            <div class="text-center mb-10">
-                <div class="inline-flex items-center justify-center w-16 h-16 bg-slate-900 text-white rounded-2xl mb-4">
-                    <i class="fas fa-headset text-2xl"></i>
-                </div>
-                <h2 class="text-3xl font-black text-slate-800 uppercase tracking-tighter">Nuevo Ticket</h2>
-            </div>
-
-            <form action="https://synergiabio.soportesynergiabio.workers.dev" id="form">
-                <input type="hidden" name="from_name" value="Portal de Soporte SynergiaBio">
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                    <input type="text" name="name" required placeholder="Nombre" class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:border-blue-500 text-slate-700">
-                    <input type="email" name="email" required placeholder="Correo" class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:border-blue-500 text-slate-700">
-                </div>
-
-                <input type="text" name="subject" required placeholder="Asunto" class="mb-6 w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:border-blue-500 text-slate-700 font-semibold">
-
-                <textarea name="message" required rows="5" placeholder="Mensaje..." class="mb-8 w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:border-blue-500 text-slate-700"></textarea>
-
-                <button type="submit" id="submit-btn" class="w-full bg-slate-900 hover:bg-blue-600 text-white font-black py-5 rounded-2xl shadow-xl transition-all flex items-center justify-center text-lg">
-                    <span id="btn-text">ENVIAR TICKET</span>
-                </button>
-            </form>
+<body class="bg-slate-100 font-sans p-4">
+    <div class="max-w-xl mx-auto bg-white rounded-3xl shadow-xl p-8 mt-10">
+        <div class="text-center mb-8">
+            <h2 class="text-2xl font-black text-slate-800 uppercase">Nuevo Ticket</h2>
         </div>
+
+        <form id="form">
+            <div class="space-y-4">
+                <input type="text" name="name" required placeholder="Nombre" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500">
+                <input type="email" name="email" required placeholder="Correo" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500">
+                <input type="text" name="subject" required placeholder="Asunto" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500">
+                <textarea name="message" required rows="4" placeholder="Descripción..." class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500"></textarea>
+                
+                <button type="submit" id="btn" class="w-full bg-slate-900 text-white font-bold py-4 rounded-xl hover:bg-blue-600 transition-all">
+                    ENVIAR TICKET
+                </button>
+            </div>
+        </form>
     </div>
 
     <script>
         const form = document.getElementById('form');
-        const btn = document.getElementById('submit-btn');
+        const btn = document.getElementById('btn');
+        // URL de tu worker (verificada en image_85801c.png)
+        const WORKER_URL = 'https://synergiabio.soportesynergiabio.workers.dev';
 
-        form.addEventListener('submit', async function(e) {
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
             btn.disabled = true;
-            btn.innerHTML = "PROCESANDO...";
+            btn.innerText = "PROCESANDO...";
 
             try {
-                const response = await fetch(form.action, {
+                const response = await fetch(WORKER_URL, {
                     method: 'POST',
                     body: new FormData(form)
                 });
 
-                const text = await response.text();
-                let result;
-                
-                try {
-                    result = JSON.parse(text);
-                } catch(e) {
-                    // Si no es JSON, Web3Forms nos mandó un error de seguridad/captcha
-                    throw new Error("Web3Forms rechazó la conexión. Verifica si tu clave está activa.");
-                }
+                const result = await response.json();
 
-                if (result.success || response.ok) {
+                if (result.success) {
                     window.location.href = "https://josevaldes-sudo.github.io/soporte-synergiabio/gracias.html";
                 } else {
-                    alert('Error: ' + (result.message || 'No se pudo procesar'));
-                    resetBtn();
+                    alert("Error: " + result.message);
+                    reset();
                 }
-            } catch (error) {
-                alert(error.message);
-                resetBtn();
+            } catch (err) {
+                alert("Error de conexión. Revisa que la Worker esté publicada.");
+                reset();
             }
         });
 
-        function resetBtn() {
+        function reset() {
             btn.disabled = false;
-            btn.innerHTML = "REINTENTAR";
+            btn.innerText = "REINTENTAR";
         }
     </script>
 </body>
