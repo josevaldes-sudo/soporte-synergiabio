@@ -2,25 +2,21 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Soporte SynergiaBio</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body class="bg-slate-100 font-sans p-4">
-    <div class="max-w-xl mx-auto bg-white rounded-3xl shadow-xl p-8 mt-10">
-        <div class="text-center mb-8">
-            <h2 class="text-2xl font-black text-slate-800 uppercase">Nuevo Ticket</h2>
-        </div>
-
-        <form id="form">
+<body class="bg-slate-100 p-8">
+    <div class="max-w-xl mx-auto bg-white p-8 rounded-3xl shadow-lg">
+        <h2 class="text-2xl font-black text-center mb-6 uppercase">Nuevo Ticket</h2>
+        
+        <form id="form" action="https://synergiabio.soportesynergiabio.workers.dev" method="POST">
             <div class="space-y-4">
-                <input type="text" name="name" required placeholder="Nombre" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500">
-                <input type="email" name="email" required placeholder="Correo" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500">
-                <input type="text" name="subject" required placeholder="Asunto" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500">
-                <textarea name="message" required rows="4" placeholder="Descripción..." class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500"></textarea>
+                <input type="text" name="name" required placeholder="Nombre" class="w-full p-4 bg-slate-50 border rounded-xl">
+                <input type="email" name="email" required placeholder="Correo" class="w-full p-4 bg-slate-50 border rounded-xl">
+                <input type="text" name="subject" required placeholder="Asunto" class="w-full p-4 bg-slate-50 border rounded-xl">
+                <textarea name="message" required placeholder="Mensaje..." class="w-full p-4 bg-slate-50 border rounded-xl" rows="4"></textarea>
                 
-                <button type="submit" id="btn" class="w-full bg-slate-900 text-white font-bold py-4 rounded-xl hover:bg-blue-600 transition-all">
+                <button type="submit" id="btn" class="w-full bg-slate-900 text-white font-bold py-4 rounded-xl">
                     ENVIAR TICKET
                 </button>
             </div>
@@ -30,30 +26,29 @@
     <script>
         const form = document.getElementById('form');
         const btn = document.getElementById('btn');
-        // URL de tu worker (verificada en image_85801c.png)
-        const WORKER_URL = 'https://synergiabio.soportesynergiabio.workers.dev';
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             btn.disabled = true;
-            btn.innerText = "PROCESANDO...";
+            btn.innerText = "ENVIANDO...";
 
             try {
-                const response = await fetch(WORKER_URL, {
+                const response = await fetch(form.action, {
                     method: 'POST',
                     body: new FormData(form)
                 });
 
-                const result = await response.json();
-
-                if (result.success) {
+                // Si la respuesta es exitosa (aunque no sea JSON perfecto)
+                if (response.ok) {
                     window.location.href = "https://josevaldes-sudo.github.io/soporte-synergiabio/gracias.html";
                 } else {
-                    alert("Error: " + result.message);
+                    const errorData = await response.text();
+                    console.error("Error original:", errorData);
+                    alert("Error en el envío. Inténtalo de nuevo en unos minutos.");
                     reset();
                 }
             } catch (err) {
-                alert("Error de conexión. Revisa que la Worker esté publicada.");
+                alert("Error de conexión con el servidor de seguridad.");
                 reset();
             }
         });
