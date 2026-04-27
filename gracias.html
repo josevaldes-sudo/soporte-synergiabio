@@ -2,22 +2,171 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Ticket Recibido - SynergiaBio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SynergiaBio — Ticket Recibido</title>
     <style>
-        body { font-family: sans-serif; text-align: center; padding: 100px; background-color: #f4f4f9; color: #333; }
-        .card { background: white; padding: 40px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: inline-block; }
-        h1 { color: #28a745; margin-bottom: 10px; }
-        p { font-size: 18px; color: #555; }
-        .btn { display: inline-block; margin-top: 25px; padding: 12px 25px; background: #007bff; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; }
-        .btn:hover { background: #0056b3; }
+        :root {
+            --primary: #2d6a4f;
+            --primary-light: #52b788;
+            --primary-dark: #1b4332;
+            --card-bg: rgba(255, 255, 255, 0.90);
+            --text: #1a1a1a;
+            --text-muted: #6b7280;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(160deg, #e8f5e9 0%, #f0f4f1 50%, #e0f2f1 100%);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* ===== HOJAS CAYENDO ===== */
+        .falling-leaves {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .leaf {
+            position: absolute;
+            top: -10%;
+            font-size: 1.5rem;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.2; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* ===== TARJETA DE ÉXITO ===== */
+        .card {
+            width: 100%;
+            max-width: 440px;
+            background: var(--card-bg);
+            padding: 3rem 2rem;
+            border-radius: 32px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(45, 106, 79, 0.12);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            z-index: 10;
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .icon-wrap {
+            width: 80px;
+            height: 80px;
+            background: #dcfce7;
+            color: var(--primary);
+            font-size: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            border: 4px solid white;
+            box-shadow: 0 8px 16px rgba(45, 106, 79, 0.1);
+        }
+
+        h1 {
+            color: var(--primary-dark);
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            letter-spacing: -0.5px;
+        }
+
+        p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .highlight {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .btn-portal {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 1rem 2rem;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 16px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(45, 106, 79, 0.2);
+        }
+
+        .btn-portal:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(45, 106, 79, 0.3);
+        }
+
+        .footer-brand {
+            position: absolute;
+            bottom: 2rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: 2px;
+            opacity: 0.6;
+        }
     </style>
 </head>
 <body>
+
+    <div class="falling-leaves" id="leaf-container"></div>
+
     <div class="card">
+        <div class="icon-wrap">✅</div>
         <h1>¡Ticket Recibido!</h1>
-        <p>Hemos registrado tu solicitud correctamente.</p>
-        <p>Nuestro equipo técnico te contactará por correo en breve.</p>
-        <a href="index.html" class="btn">Volver al Portal</a>
+        <p>Hemos registrado tu solicitud correctamente en nuestro sistema de soporte.</p>
+        <p>Nuestro equipo técnico revisará los detalles y te contactará por <span class="highlight">correo electrónico</span> en breve.</p>
+        
+        <a href="https://josevaldes-sudo.github.io/soporte-synergiabio/" class="btn-portal">Volver al Portal</a>
     </div>
+
+    <div class="footer-brand">SYNERGIABIO SOLUTIONS</div>
+
+    <script>
+        // Generador de hojas cayendo
+        (function createLeaves() {
+            const container = document.getElementById('leaf-container');
+            const symbols = ['🍃', '🌿', '🌱'];
+            for (let i = 0; i < 20; i++) {
+                const leaf = document.createElement('div');
+                leaf.classList.add('leaf');
+                leaf.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                leaf.style.left = `${Math.random() * 100}vw`;
+                leaf.style.fontSize = `${1 + Math.random() * 1.5}rem`;
+                leaf.style.animationDuration = `${10 + Math.random() * 15}s`;
+                leaf.style.animationDelay = `-${Math.random() * 20}s`;
+                leaf.style.opacity = `${0.1 + Math.random() * 0.2}`;
+                container.appendChild(leaf);
+            }
+        })();
+    </script>
 </body>
 </html>
