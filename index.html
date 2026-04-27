@@ -3,115 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Soporte SynergiaBio | Nuevo Ticket</title>
+    <title>Soporte SynergiaBio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        body { background-color: #f8fafc; }
-        .glass-card { background: white; border: 1px solid #e2e8f0; }
-    </style>
 </head>
-<body class="font-sans antialiased">
-
+<body class="bg-slate-50 font-sans">
     <div class="container mx-auto px-4 py-16">
-        <div class="max-w-2xl mx-auto glass-card rounded-[2rem] shadow-2xl p-8 md:p-12">
-            
+        <div class="max-w-2xl mx-auto bg-white rounded-[2rem] shadow-2xl p-8 md:p-12 border border-slate-100">
             <div class="text-center mb-10">
                 <div class="inline-flex items-center justify-center w-16 h-16 bg-slate-900 text-white rounded-2xl mb-4">
                     <i class="fas fa-headset text-2xl"></i>
                 </div>
                 <h2 class="text-3xl font-black text-slate-800 uppercase tracking-tighter">Nuevo Ticket</h2>
-                <p class="text-slate-500 font-medium">SynergiaBio Support System</p>
             </div>
 
             <form action="https://synergiabio.soportesynergiabio.workers.dev" id="form">
-                
                 <input type="hidden" name="from_name" value="Portal de Soporte SynergiaBio">
-                <input type="hidden" name="redirect_url" value="https://josevaldes-sudo.github.io/soporte-synergiabio/gracias.html">
-
+                
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase mb-2 ml-1">Nombre</label>
-                        <input type="text" name="name" required placeholder="Juan Pérez"
-                        class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:border-blue-500 transition-all text-slate-700">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase mb-2 ml-1">Correo Electrónico</label>
-                        <input type="email" name="email" required placeholder="usuario@empresa.com"
-                        class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:border-blue-500 transition-all text-slate-700">
-                    </div>
+                    <input type="text" name="name" required placeholder="Nombre" class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:border-blue-500 text-slate-700">
+                    <input type="email" name="email" required placeholder="Correo" class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:border-blue-500 text-slate-700">
                 </div>
 
-                <div class="mb-6">
-                    <label class="block text-xs font-bold text-slate-400 uppercase mb-2 ml-1">Asunto</label>
-                    <input type="text" name="subject" required placeholder="¿En qué podemos ayudarte?"
-                    class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:border-blue-500 transition-all text-slate-700 font-semibold">
-                </div>
+                <input type="text" name="subject" required placeholder="Asunto" class="mb-6 w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:border-blue-500 text-slate-700 font-semibold">
 
-                <div class="mb-8">
-                    <label class="block text-xs font-bold text-slate-400 uppercase mb-2 ml-1">Mensaje Detallado</label>
-                    <textarea name="message" required rows="5" placeholder="Explica tu solicitud aquí..."
-                    class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:border-blue-500 transition-all text-slate-700"></textarea>
-                </div>
+                <textarea name="message" required rows="5" placeholder="Mensaje..." class="mb-8 w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:border-blue-500 text-slate-700"></textarea>
 
                 <button type="submit" id="submit-btn" class="w-full bg-slate-900 hover:bg-blue-600 text-white font-black py-5 rounded-2xl shadow-xl transition-all flex items-center justify-center text-lg">
-                    <span id="btn-text" class="flex items-center">
-                        <i class="fas fa-paper-plane mr-3"></i> ENVIAR TICKET
-                    </span>
+                    <span id="btn-text">ENVIAR TICKET</span>
                 </button>
-
             </form>
-
-            <div class="mt-8 pt-8 border-t border-slate-100 text-center text-xs text-slate-400 font-bold uppercase tracking-widest">
-                Seguridad protegida por Cloudflare Workers
-            </div>
-
         </div>
     </div>
 
     <script>
         const form = document.getElementById('form');
         const btn = document.getElementById('submit-btn');
-        const btnText = document.getElementById('btn-text');
 
         form.addEventListener('submit', async function(e) {
-            e.preventDefault(); // Detiene el envío normal
-            
+            e.preventDefault();
             btn.disabled = true;
-            btn.style.opacity = '0.7';
-            btnText.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-3"></i> PROCESANDO...';
-
-            const formData = new FormData(form);
+            btn.innerHTML = "PROCESANDO...";
 
             try {
                 const response = await fetch(form.action, {
                     method: 'POST',
-                    body: formData,
-                    mode: 'cors'
+                    body: new FormData(form)
                 });
 
-                const result = await response.json();
+                const text = await response.text();
+                let result;
+                
+                try {
+                    result = JSON.parse(text);
+                } catch(e) {
+                    // Si no es JSON, Web3Forms nos mandó un error de seguridad/captcha
+                    throw new Error("Web3Forms rechazó la conexión. Verifica si tu clave está activa.");
+                }
 
-                if (result.success) {
-                    // Si todo va bien, vamos a la página de gracias
-                    window.location.href = document.getElementsByName('redirect_url')[0].value;
+                if (result.success || response.ok) {
+                    window.location.href = "https://josevaldes-sudo.github.io/soporte-synergiabio/gracias.html";
                 } else {
-                    alert('Error: ' + (result.message || 'Error en el servidor de envíos'));
-                    resetButton();
+                    alert('Error: ' + (result.message || 'No se pudo procesar'));
+                    resetBtn();
                 }
             } catch (error) {
-                console.error(error);
-                alert('Error de conexión. Asegúrate de que la Worker esté activa.');
-                resetButton();
+                alert(error.message);
+                resetBtn();
             }
         });
 
-        function resetButton() {
+        function resetBtn() {
             btn.disabled = false;
-            btn.style.opacity = '1';
-            btnText.innerHTML = '<i class="fas fa-paper-plane mr-3"></i> ENVIAR TICKET';
+            btn.innerHTML = "REINTENTAR";
         }
     </script>
-
 </body>
 </html>
