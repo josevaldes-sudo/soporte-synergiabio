@@ -5,58 +5,39 @@
     <title>Soporte SynergiaBio</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-slate-100 p-8">
-    <div class="max-w-xl mx-auto bg-white p-8 rounded-3xl shadow-lg">
-        <h2 class="text-2xl font-black text-center mb-6 uppercase">Nuevo Ticket</h2>
+<body class="bg-slate-100 p-4 md:p-10">
+    <div class="max-w-xl mx-auto bg-white p-8 rounded-3xl shadow-2xl">
+        <h2 class="text-2xl font-black text-center mb-8 uppercase tracking-tighter">Nuevo Ticket de Soporte</h2>
         
-        <form id="form" action="https://synergiabio.soportesynergiabio.workers.dev" method="POST">
-            <div class="space-y-4">
-                <input type="text" name="name" required placeholder="Nombre" class="w-full p-4 bg-slate-50 border rounded-xl">
-                <input type="email" name="email" required placeholder="Correo" class="w-full p-4 bg-slate-50 border rounded-xl">
-                <input type="text" name="subject" required placeholder="Asunto" class="w-full p-4 bg-slate-50 border rounded-xl">
-                <textarea name="message" required placeholder="Mensaje..." class="w-full p-4 bg-slate-50 border rounded-xl" rows="4"></textarea>
-                
-                <button type="submit" id="btn" class="w-full bg-slate-900 text-white font-bold py-4 rounded-xl">
-                    ENVIAR TICKET
-                </button>
+        <form action="https://synergiabio.soportesynergiabio.workers.dev" method="POST" class="space-y-4">
+            
+            <input type="hidden" name="from_name" value="Portal SynergiaBio">
+            <input type="hidden" name="redirect" value="https://josevaldes-sudo.github.io/soporte-synergiabio/gracias.html">
+
+            <div>
+                <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Tu Nombre</label>
+                <input type="text" name="name" required class="w-full p-4 bg-gray-50 border rounded-xl outline-none focus:border-blue-500">
             </div>
+
+            <div>
+                <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Tu Email</label>
+                <input type="email" name="email" required class="w-full p-4 bg-gray-50 border rounded-xl outline-none focus:border-blue-500">
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Asunto</label>
+                <input type="text" name="subject" required class="w-full p-4 bg-gray-50 border rounded-xl outline-none focus:border-blue-500">
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Mensaje</label>
+                <textarea name="message" required rows="4" class="w-full p-4 bg-gray-50 border rounded-xl outline-none focus:border-blue-500"></textarea>
+            </div>
+
+            <button type="submit" class="w-full bg-slate-900 text-white font-bold py-5 rounded-2xl hover:bg-blue-600 transition-all shadow-lg">
+                ENVIAR TICKET AHORA
+            </button>
         </form>
     </div>
-
-    <script>
-        const form = document.getElementById('form');
-        const btn = document.getElementById('btn');
-
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            btn.disabled = true;
-            btn.innerText = "ENVIANDO...";
-
-            try {
-                const response = await fetch(form.action, {
-                    method: 'POST',
-                    body: new FormData(form)
-                });
-
-                // Si la respuesta es exitosa (aunque no sea JSON perfecto)
-                if (response.ok) {
-                    window.location.href = "https://josevaldes-sudo.github.io/soporte-synergiabio/gracias.html";
-                } else {
-                    const errorData = await response.text();
-                    console.error("Error original:", errorData);
-                    alert("Error en el envío. Inténtalo de nuevo en unos minutos.");
-                    reset();
-                }
-            } catch (err) {
-                alert("Error de conexión con el servidor de seguridad.");
-                reset();
-            }
-        });
-
-        function reset() {
-            btn.disabled = false;
-            btn.innerText = "REINTENTAR";
-        }
-    </script>
 </body>
 </html>
