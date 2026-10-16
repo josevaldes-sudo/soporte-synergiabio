@@ -1,572 +1,709 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>SynergiaBIO · Soporte Técnico</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SynergiaBIO · Soporte Técnico</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
-:root {
-  --bg-deep: #060a14;
-  --bg-mid: #0d1220;
-  --bg-card: rgba(255, 255, 255, 0.04);
-  --border-glass: rgba(255, 255, 255, 0.08);
-  --neon-green: #00ff88;
-  --neon-cyan: #00d4ff;
-  --neon-pink: #ff6b9d;
-  --neon-gold: #ffd700;
-  --neon-purple: #a855f7;
-  --text-primary: #ffffff;
-  --text-muted: #8b95a8;
-  --text-dim: #5a6478;
-  --success: #00ff88;
-  --error: #ff4757;
-}
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body {
-  font-family: 'Inter', -apple-system, sans-serif;
-  background: var(--bg-deep);
-  color: var(--text-primary);
-  min-height: 100vh;
-  overflow-x: hidden;
-  position: relative;
-  -webkit-font-smoothing: antialiased;
-  overflow: hidden;
-  animation: bodyUnlock 3.4s ease-in-out forwards;
-}
-body.loaded { overflow: auto; animation: none; }
-@keyframes bodyUnlock {
-  0%, 68% { overflow: hidden; }
-  100% { overflow: auto; overflow-x: hidden; }
-}
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* ============ INTRO OVERLAY ============ */
-.intro-overlay {
-  position: fixed; inset: 0; z-index: 9999;
-  background: var(--bg-deep);
-  display: flex; align-items: center; justify-content: center;
-  transition: opacity 0.6s ease, visibility 0.6s ease;
-  animation: overlayAutoHide 3.4s ease-in-out forwards;
-}
-.intro-overlay.fade-out { opacity: 0; visibility: hidden; pointer-events: none; animation: none; }
-@keyframes overlayAutoHide {
-  0%, 68% { opacity: 1; visibility: visible; pointer-events: auto; }
-  100% { opacity: 0; visibility: hidden; pointer-events: none; }
-}
-.intro-ball {
-  width: 50px; height: 50px;
-  background: radial-gradient(circle at 30% 30%, #7dffb3, #00ff88 40%, #00c853 100%);
-  border-radius: 50%;
-  box-shadow: 0 0 30px rgba(0,255,136,.6), 0 0 60px rgba(0,255,136,.4), 0 0 100px rgba(0,255,136,.2), inset -5px -5px 15px rgba(0,100,50,.4), inset 5px 5px 15px rgba(255,255,255,.3);
-  position: absolute; top: -80px;
-  animation: ballDrop 2.2s cubic-bezier(.4,0,.2,1) forwards;
-}
-.intro-ball::before {
-  content: ''; position: absolute; top: 15%; left: 20%; width: 30%; height: 20%;
-  background: rgba(255,255,255,.6); border-radius: 50%; filter: blur(2px);
-}
-@keyframes ballDrop {
-  0% { top: -80px; transform: scale(.5) rotate(0); opacity: 0; }
-  10% { opacity: 1; }
-  55% { top: calc(50% - 25px); transform: scale(1) rotate(180deg); animation-timing-function: cubic-bezier(.34,1.56,.64,1); }
-  65% { top: calc(50% - 35px); transform: scale(1.1) rotate(200deg); }
-  75% { top: calc(50% - 25px); transform: scale(.95) rotate(210deg); }
-  85% { top: calc(50% - 28px); transform: scale(1.02) rotate(215deg); }
-  95% { top: calc(50% - 25px); transform: scale(1) rotate(220deg); }
-  100% { top: calc(50% - 25px); transform: scale(1) rotate(220deg); opacity: 1; }
-}
-.intro-ripple {
-  position: absolute; top: 50%; left: 50%; width: 50px; height: 50px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(0,255,136,.6), transparent 70%);
-  transform: translate(-50%,-50%) scale(0); opacity: 0;
-  animation: rippleExpand .8s ease-out 1.4s forwards;
-}
-@keyframes rippleExpand { 0% { transform: translate(-50%,-50%) scale(0); opacity: 1; } 100% { transform: translate(-50%,-50%) scale(15); opacity: 0; } }
-.intro-ripple-2 { animation-delay: 1.6s; animation-duration: 1s; }
-.intro-text {
-  position: absolute; top: calc(50% + 60px); left: 50%; transform: translateX(-50%);
-  font-family: 'Space Grotesk', sans-serif; font-size: .9rem; font-weight: 600;
-  letter-spacing: 3px; color: var(--neon-green); opacity: 0;
-  animation: textFadeIn .5s ease-out 1.2s forwards;
-}
-@keyframes textFadeIn { from { opacity: 0; transform: translate(-50%,10px); } to { opacity: 1; transform: translate(-50%,0); } }
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            background: radial-gradient(circle at 20% 50%, #0a1f12 0%, #050a08 40%, #081018 100%);
+            color: #e2e8f0;
+            overflow-x: hidden;
+            position: relative;
+            padding-bottom: 120px;
+        }
 
-/* ============ ANIMATED BACKGROUND ============ */
-.bg-aurora {
-  position: fixed; inset: 0; z-index: 0; overflow: hidden;
-  background: radial-gradient(ellipse at top, #0d1220 0%, #060a14 100%);
-}
-.aurora-blob { position: absolute; border-radius: 50%; filter: blur(80px); opacity: .5; animation: blobFloat 20s ease-in-out infinite; }
-.aurora-blob:nth-child(1) { width: 500px; height: 500px; background: radial-gradient(circle,#00ff88 0%,transparent 70%); top: -10%; left: -10%; animation-duration: 25s; }
-.aurora-blob:nth-child(2) { width: 600px; height: 600px; background: radial-gradient(circle,#00d4ff 0%,transparent 70%); top: 40%; right: -15%; animation-duration: 30s; animation-delay: -5s; }
-.aurora-blob:nth-child(3) { width: 450px; height: 450px; background: radial-gradient(circle,#a855f7 0%,transparent 70%); bottom: -10%; left: 30%; animation-duration: 22s; animation-delay: -10s; }
-.aurora-blob:nth-child(4) { width: 400px; height: 400px; background: radial-gradient(circle,#ff6b9d 0%,transparent 70%); top: 20%; left: 50%; animation-duration: 28s; animation-delay: -15s; opacity: .3; }
-@keyframes blobFloat { 0%,100% { transform: translate(0,0) scale(1); } 33% { transform: translate(50px,-30px) scale(1.1); } 66% { transform: translate(-30px,40px) scale(.95); } }
-.grid-overlay {
-  position: fixed; inset: 0;
-  background-image: linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px), linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);
-  background-size: 60px 60px; z-index: 1; pointer-events: none;
-  mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
-}
-.fireflies { position: fixed; inset: 0; z-index: 2; pointer-events: none; }
-.firefly {
-  position: absolute; width: 4px; height: 4px; background: var(--neon-green); border-radius: 50%;
-  box-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--neon-green);
-  animation: fireflyFloat 15s ease-in-out infinite;
-}
-.firefly::after { content: ''; position: absolute; inset: -4px; background: inherit; border-radius: 50%; opacity: .3; filter: blur(4px); }
-@keyframes fireflyFloat { 0%,100% { transform: translate(0,0); opacity: 0; } 10%,90% { opacity: 1; } 25% { transform: translate(100px,-150px); } 50% { transform: translate(-80px,-300px); } 75% { transform: translate(150px,-200px); } }
+        /* =========================================
+           LUCIÉRNAGAS DE COLORES
+           ========================================= */
+        #fireflies-container {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
 
-/* ============ HEADER ============ */
-header {
-  position: relative; z-index: 100; padding: 1.2rem 2rem;
-  backdrop-filter: blur(20px); background: rgba(6,10,20,.6);
-  border-bottom: 1px solid var(--border-glass);
-  animation: slideDown .8s cubic-bezier(.16,1,.3,1);
-}
-@keyframes slideDown { from { transform: translateY(-100%); opacity: 0; } }
-.header-content { max-width: 720px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
-.logo-container { display: flex; align-items: center; gap: .8rem; position: relative; }
+        .firefly {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0;
+            animation: floatFirefly infinite ease-in-out;
+        }
 
-/* Ajuste de logo en header */
-.logo-img { 
-  max-height: 52px; 
-  width: auto; 
-  max-width: 240px; 
-  object-fit: contain; 
-  display: block;
-  transition: transform .3s ease; 
-}
-.logo-img:hover { transform: scale(1.03); }
+        @keyframes floatFirefly {
+            0% { transform: translate(0, 0) scale(0.8); opacity: 0; }
+            20% { opacity: 1; }
+            50% { transform: translate(var(--tx), var(--ty)) scale(1.2); }
+            80% { opacity: 1; }
+            100% { transform: translate(var(--tx2), var(--ty2)) scale(0.8); opacity: 0; }
+        }
 
-.logo-glow {
-  position: absolute; width: 220px; height: 90px;
-  background: radial-gradient(ellipse, rgba(0,255,136,.15), transparent 70%);
-  filter: blur(20px); pointer-events: none;
-  animation: logoPulse 3s ease-in-out infinite;
-  left: 50%; top: 50%; transform: translate(-50%,-50%);
-}
-@keyframes logoPulse { 0%,100% { opacity: .5; transform: translate(-50%,-50%) scale(1); } 50% { opacity: .9; transform: translate(-50%,-50%) scale(1.15); } }
+        /* =========================================
+           HEADER
+           ========================================= */
+        .header {
+            position: relative;
+            z-index: 100;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            background: rgba(5, 10, 8, 0.6);
+        }
 
-/* Support button with nudge */
-.support-btn {
-  display: flex; align-items: center; gap: .5rem;
-  padding: .55rem 1.1rem;
-  background: linear-gradient(135deg, rgba(0,255,136,.15), rgba(0,212,255,.15));
-  border: 1px solid rgba(0,255,136,.3); border-radius: 100px;
-  color: var(--neon-green); font-weight: 600; font-size: .88rem;
-  cursor: pointer; transition: all .4s cubic-bezier(.16,1,.3,1);
-  position: relative; overflow: hidden; font-family: inherit; white-space: nowrap; flex-shrink: 0;
-  animation: gentleNudge 2s ease-in-out infinite;
-}
-@keyframes gentleNudge { 0%,85%,100% { transform: translateX(0); } 88% { transform: translateX(2px); } 91% { transform: translateX(-2px); } 94% { transform: translateX(1.5px); } 97% { transform: translateX(-1px); } }
-.support-btn::before {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(135deg, var(--neon-green), var(--neon-cyan));
-  opacity: 0; transition: opacity .4s ease; z-index: 0;
-}
-.support-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,255,136,.3); border-color: var(--neon-green); color: var(--bg-deep); animation: none; }
-.support-btn:hover::before { opacity: 1; }
-.support-btn svg, .support-btn span { position: relative; z-index: 1; }
-.support-btn svg { animation: pulse 2s ease-in-out infinite; }
-@keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+        .logo-img {
+            height: 45px;
+            width: auto;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
 
-/* ============ SUPPORT PANEL ============ */
-.support-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.6); backdrop-filter: blur(8px); z-index: 1000; opacity: 0; visibility: hidden; transition: all .4s ease; }
-.support-overlay.active { opacity: 1; visibility: visible; }
-.support-panel {
-  position: fixed; top: 100px; right: 2rem; width: 340px;
-  background: rgba(13,18,32,.95); backdrop-filter: blur(30px);
-  border: 1px solid var(--border-glass); border-radius: 24px; padding: 1.8rem;
-  z-index: 1001; transform: translateY(-20px) scale(.95); opacity: 0; visibility: hidden;
-  transition: all .5s cubic-bezier(.16,1,.3,1); box-shadow: 0 30px 80px rgba(0,0,0,.5);
-}
-.support-panel::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--neon-green), var(--neon-cyan), var(--neon-purple)); border-radius: 24px 24px 0 0; }
-.support-panel.active { transform: translateY(0) scale(1); opacity: 1; visibility: visible; }
-.support-panel-header { display: flex; align-items: center; gap: .8rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-glass); }
-.support-panel-header .icon-circle { width: 44px; height: 44px; background: linear-gradient(135deg, var(--neon-green), var(--neon-cyan)); border-radius: 14px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(0,255,136,.3); animation: iconPulse 2s ease-in-out infinite; }
-@keyframes iconPulse { 0%,100% { box-shadow: 0 8px 20px rgba(0,255,136,.3); } 50% { box-shadow: 0 8px 30px rgba(0,255,136,.6); } }
-.support-panel-header h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.2rem; font-weight: 700; background: linear-gradient(135deg, var(--text-primary), var(--neon-green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-.contact-item { display: flex; align-items: center; gap: 1rem; padding: 1rem; margin-bottom: .7rem; background: rgba(255,255,255,.03); border: 1px solid var(--border-glass); border-radius: 14px; text-decoration: none; color: inherit; transition: all .3s ease; animation: slideIn .5s ease-out both; }
-.contact-item:nth-child(1) { animation-delay: .1s; }
-.contact-item:nth-child(2) { animation-delay: .2s; }
-@keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
-.contact-item:hover { background: rgba(0,255,136,.08); border-color: rgba(0,255,136,.3); transform: translateX(5px); }
-.contact-icon { width: 42px; height: 42px; background: linear-gradient(135deg, rgba(0,255,136,.2), rgba(0,212,255,.2)); border: 1px solid rgba(0,255,136,.3); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all .3s ease; }
-.contact-item:hover .contact-icon { transform: rotate(8deg) scale(1.1); background: linear-gradient(135deg, var(--neon-green), var(--neon-cyan)); }
-.contact-icon svg { width: 20px; height: 20px; stroke: var(--neon-green); transition: stroke .3s ease; }
-.contact-item:hover .contact-icon svg { stroke: var(--bg-deep); }
-.contact-info { flex: 1; min-width: 0; }
-.contact-label { font-size: .7rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: .2rem; }
-.contact-value { font-size: .9rem; color: var(--text-primary); font-weight: 600; word-break: break-all; }
-.close-panel { position: absolute; top: 1rem; right: 1rem; width: 32px; height: 32px; background: rgba(255,255,255,.05); border: 1px solid var(--border-glass); border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 1rem; transition: all .3s ease; z-index: 2; }
-.close-panel:hover { background: var(--error); color: white; border-color: var(--error); transform: rotate(90deg); }
-.copy-toast {
-  position: absolute; bottom: -1.8rem; left: 50%; transform: translateX(-50%) translateY(5px);
-  background: var(--neon-green); color: var(--bg-deep); font-size: .75rem; font-weight: 700;
-  padding: .3rem .8rem; border-radius: 100px; white-space: nowrap;
-  opacity: 0; pointer-events: none; transition: all .3s ease;
-}
-.copy-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .logo-img:hover { transform: scale(1.05); }
 
-/* ============ FOOTER ============= */
-footer { position: relative; z-index: 10; text-align: center; padding: 2rem 1rem 3rem; animation: fadeIn 1s ease-out 1.2s both; }
-.footer-badges { display: flex; justify-content: center; gap: .8rem; margin-bottom: 1rem; flex-wrap: wrap; }
-.badge { display: flex; align-items: center; gap: .4rem; padding: .5rem 1rem; background: rgba(255,255,255,.03); border: 1px solid var(--border-glass); border-radius: 100px; color: var(--text-muted); font-weight: 500; font-size: .8rem; transition: all .3s ease; }
-.badge:hover { background: rgba(0,255,136,.08); border-color: rgba(0,255,136,.3); color: var(--neon-green); transform: translateY(-2px); }
-.badge-icon { width: 14px; height: 14px; stroke: var(--neon-green); }
-.brand-name { font-family: 'Space Grotesk', sans-serif; font-weight: 700; letter-spacing: 4px; font-size: .85rem; background: linear-gradient(135deg, var(--text-muted), var(--neon-green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        /* =========================================
+           PANEL DE CONTACTO (OCULTO)
+           ========================================= */
+        .contact-panel-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 90;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+        .contact-panel-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
 
-/* ============ MAIN CONTAINER ============ */
-.main-container { position: relative; z-index: 10; max-width: 720px; margin: 3rem auto; padding: 0 1.5rem; animation: fadeInUp 1s cubic-bezier(.16,1,.3,1) .3s both; }
-@keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        .contact-panel {
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            z-index: 95;
+            background: rgba(10, 20, 15, 0.95);
+            border: 1px solid rgba(74, 222, 128, 0.2);
+            border-radius: 24px;
+            padding: 40px;
+            width: 90%;
+            max-width: 520px;
+            backdrop-filter: blur(30px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+        }
+        .contact-panel.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
 
-/* ============ CARD ============ */
-.card { background: var(--bg-card); backdrop-filter: blur(30px); border: 1px solid var(--border-glass); border-radius: 28px; overflow: hidden; position: relative; box-shadow: 0 30px 80px rgba(0,0,0,.4); }
-.card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(0,255,136,.5), transparent); }
+        .contact-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+        }
+        .contact-panel-header h3 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #f1f5f9;
+        }
+        .close-panel {
+            width: 36px; height: 36px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 50%;
+            color: #94a3b8;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s;
+        }
+        .close-panel:hover {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+        }
 
-/* ============ CARD HEADER ============ */
-.card-header { position: relative; padding: 3rem 2rem 2.5rem; text-align: center; overflow: hidden; background: linear-gradient(180deg, rgba(0,255,136,.05) 0%, transparent 100%); }
-.card-header-bg { position: absolute; inset: 0; overflow: hidden; }
-.plant-decoration { position: absolute; opacity: .18; }
-.plant-left { left: -20px; bottom: -20px; width: 180px; height: 200px; }
-.plant-right { right: -20px; top: -20px; width: 160px; height: 180px; transform: scaleX(-1); }
-.plant-stem { stroke: var(--neon-green); stroke-width: 2; fill: none; stroke-dasharray: 300; stroke-dashoffset: 300; animation: drawStem 2s ease-out forwards; }
-@keyframes drawStem { to { stroke-dashoffset: 0; } }
-.plant-leaf { fill: var(--neon-green); opacity: 0; transform-origin: center; animation: leafGrow .6s ease-out forwards; }
-.plant-leaf:nth-child(2) { animation-delay: .8s; }
-.plant-leaf:nth-child(3) { animation-delay: 1.2s; }
-.plant-leaf:nth-child(4) { animation-delay: 1.6s; }
-@keyframes leafGrow { from { opacity: 0; transform: scale(0) rotate(-20deg); } to { opacity: .6; transform: scale(1) rotate(0); } }
-.card-header-content { position: relative; z-index: 2; }
-.card-header .tag { display: inline-flex; align-items: center; gap: .5rem; padding: .4rem 1rem; background: rgba(0,255,136,.1); border: 1px solid rgba(0,255,136,.3); border-radius: 100px; color: var(--neon-green); font-size: .75rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 1.2rem; animation: fadeIn .6s ease-out .5s both; }
-.tag-dot { width: 6px; height: 6px; background: var(--neon-green); border-radius: 50%; box-shadow: 0 0 10px var(--neon-green); animation: dotPulse 1.5s ease-in-out infinite; }
-@keyframes dotPulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: .5; transform: scale(1.3); } }
+        .contact-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px 24px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .contact-card:hover {
+            background: rgba(74, 222, 128, 0.05);
+            border-color: rgba(74, 222, 128, 0.3);
+            transform: translateX(4px);
+        }
+        .contact-card-icon {
+            width: 48px; height: 48px;
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+            background: rgba(59, 130, 246, 0.15);
+        }
+        .contact-card-info { display: flex; flex-direction: column; gap: 4px; }
+        .contact-card-label {
+            font-size: 11px; color: #64748b;
+            font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .contact-card-value { font-size: 16px; font-weight: 600; color: #e2e8f0; }
+        .copy-hint {
+            margin-left: auto; font-size: 12px; color: #4ade80;
+            font-weight: 500; opacity: 0; transition: opacity 0.3s;
+        }
+        .contact-card:hover .copy-hint { opacity: 1; }
 
-/* Logo de la tarjeta principal */
-.card-logo-img {
-  display: block;
-  margin: 0 auto 1.2rem;
-  max-height: 55px;
-  width: auto;
-  max-width: 280px;
-  object-fit: contain;
-}
+        /* Toast */
+        .copy-toast {
+            position: fixed; bottom: 30px; left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: linear-gradient(135deg, #4ade80, #16a34a);
+            color: white; padding: 14px 28px; border-radius: 50px;
+            font-size: 14px; font-weight: 600; z-index: 200;
+            box-shadow: 0 10px 30px rgba(74, 222, 128, 0.3);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex; align-items: center; gap: 8px;
+        }
+        .copy-toast.show { transform: translateX(-50%) translateY(0); }
 
-.card-header .subtitle { font-size: 1.1rem; color: var(--text-muted); font-weight: 400; line-height: 1.5; animation: fadeIn .8s ease-out .8s both; }
-.float-badges { position: absolute; inset: 0; pointer-events: none; }
-.float-badge { position: absolute; padding: .5rem .9rem; background: rgba(255,255,255,.05); backdrop-filter: blur(10px); border: 1px solid var(--border-glass); border-radius: 100px; font-size: .75rem; font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: .4rem; animation: floatBadge 6s ease-in-out infinite; }
-.float-badge:nth-child(1) { top: 20%; left: 5%; animation-delay: 0s; }
-.float-badge:nth-child(2) { top: 35%; right: 5%; animation-delay: 2s; }
-.float-badge:nth-child(3) { bottom: 20%; left: 8%; animation-delay: 4s; }
-@keyframes floatBadge { 0%,100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-10px) rotate(2deg); } }
+        /* =========================================
+           MAIN CONTENT
+           ========================================= */
+        .main-content {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            min-height: calc(100vh - 85px);
+        }
 
-/* ============ FORM ============ */
-.form-container { padding: 2rem; }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
-.form-group { margin-bottom: 1rem; position: relative; animation: fadeInUp .6s ease-out both; }
-.form-group:nth-child(1) { animation-delay: .4s; }
-.form-group:nth-child(2) { animation-delay: .5s; }
-.form-group:nth-child(3) { animation-delay: .6s; }
-.form-group:nth-child(4) { animation-delay: .7s; }
-label { display: flex; align-items: center; gap: .5rem; color: var(--text-muted); font-weight: 600; font-size: .75rem; margin-bottom: .5rem; text-transform: uppercase; letter-spacing: 1.5px; }
-.label-icon { width: 14px; height: 14px; stroke: var(--neon-green); }
-.input-wrapper { position: relative; }
-input, textarea { width: 100%; padding: .95rem 1.1rem; background: rgba(255,255,255,.03); border: 1px solid var(--border-glass); border-radius: 12px; color: var(--text-primary); font-size: .95rem; font-family: inherit; transition: all .3s cubic-bezier(.16,1,.3,1); outline: none; }
-input::placeholder, textarea::placeholder { color: var(--text-dim); }
-input:focus, textarea:focus { background: rgba(0,255,136,.05); border-color: var(--neon-green); box-shadow: 0 0 0 4px rgba(0,255,136,.1), 0 0 30px rgba(0,255,136,.15); transform: translateY(-2px); }
-textarea { resize: vertical; min-height: 100px; font-family: inherit; }
-.input-glow { position: absolute; inset: 0; border-radius: 12px; pointer-events: none; opacity: 0; transition: opacity .3s ease; background: radial-gradient(circle at var(--x,50%) var(--y,50%), rgba(0,255,136,.3), transparent 50%); }
-input:focus ~ .input-glow, textarea:focus ~ .input-glow { opacity: 1; }
-.error-message { color: var(--error); font-size: .8rem; margin-top: .4rem; display: none; font-weight: 500; animation: shake .4s ease; }
-.error-message.show { display: block; }
-input.error, textarea.error { border-color: var(--error); animation: shake .4s ease; }
-@keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
-.submit-btn { width: 100%; padding: 1.1rem; margin-top: .5rem; background: linear-gradient(135deg, #00e676 0%, #00c853 50%, #00ff88 100%); color: #052010; border: none; border-radius: 14px; font-size: 1.05rem; font-weight: 800; font-family: inherit; cursor: pointer; transition: all .4s cubic-bezier(.16,1,.3,1); display: flex; align-items: center; justify-content: center; gap: .7rem; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,230,118,.4), 0 0 0 1px rgba(0,255,136,.3) inset; animation: fadeInUp .6s ease-out .8s both; letter-spacing: .5px; text-shadow: 0 1px 2px rgba(255,255,255,.2); }
-.submit-btn::before { content: ''; position: absolute; top: 50%; left: 50%; width: 0; height: 0; background: rgba(255,255,255,.3); border-radius: 50%; transform: translate(-50%,-50%); transition: width .6s ease, height .6s ease; }
-.submit-btn:hover::before { width: 400px; height: 400px; }
-.submit-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 45px rgba(0,230,118,.6), 0 0 0 1px rgba(0,255,136,.5) inset; background: linear-gradient(135deg, #00ff88 0%, #00e676 50%, #00c853 100%); }
-.submit-btn:active { transform: translateY(-1px); }
-.submit-btn:disabled { opacity: .7; cursor: not-allowed; }
-.btn-icon { width: 18px; height: 18px; position: relative; z-index: 1; transition: transform .3s ease; stroke: #052010; }
-.submit-btn:hover .btn-icon { transform: translateX(4px) rotate(-10deg); }
-.btn-text { position: relative; z-index: 1; }
-.spinner { display: none; width: 20px; height: 20px; border: 3px solid rgba(5,32,16,.3); border-top-color: #052010; border-radius: 50%; animation: spin .8s linear infinite; position: relative; z-index: 1; }
-@keyframes spin { to { transform: rotate(360deg); } }
+        .info-section { animation: fadeInLeft 0.8s ease-out; }
+        .form-section { animation: fadeInRight 0.8s ease-out 0.2s both; }
 
-/* hidden fields */
-.hf { display: none !important; }
+        @keyframes fadeInLeft { from { opacity: 0; transform: translateX(-40px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes fadeInRight { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
 
-@media (max-width: 768px) {
-  header { padding: .9rem 1rem; }
-  .logo-img { max-height: 40px; }
-  .card-logo-img { max-height: 45px; }
-  .support-btn { padding: .5rem .85rem; font-size: .8rem; gap: .4rem; min-width: 0; }
-  .support-btn svg { width: 14px; height: 14px; }
-  .support-panel { right: 1rem; left: 1rem; width: auto; top: 80px; }
-  .main-container { margin: 2rem auto; padding: 0 1rem; }
-  .card-header { padding: 2rem 1.5rem 1.8rem; }
-  .card-header .subtitle { font-size: .95rem; }
-  .float-badge { display: none; }
-  .form-container { padding: 1.5rem; }
-  .form-row { grid-template-columns: 1fr; gap: 0; }
-  .plant-decoration { display: none; }
-}
-@media (max-width: 400px) {
-  .form-container { padding: 1.2rem; }
-  .support-btn { padding: .45rem .7rem; font-size: .75rem; }
-}
-</style>
+        .status-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(74, 222, 128, 0.1);
+            border: 1px solid rgba(74, 222, 128, 0.3);
+            padding: 8px 18px; border-radius: 50px;
+            font-size: 13px; font-weight: 600; color: #4ade80;
+            margin-bottom: 24px;
+        }
+        .status-dot {
+            width: 8px; height: 8px; background: #4ade80;
+            border-radius: 50%; animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.4); }
+            50% { box-shadow: 0 0 0 8px rgba(74, 222, 128, 0); }
+        }
+
+        .info-section h1 {
+            font-size: 48px; font-weight: 800; line-height: 1.1;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .info-section h1 span {
+            background: linear-gradient(135deg, #4ade80, #a3e635);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .company-motto {
+            display: inline-block;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #4ade80;
+            padding: 10px 20px;
+            border-left: 3px solid #4ade80;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, rgba(74, 222, 128, 0.08), transparent);
+            animation: fadeInLeft 0.8s ease-out 0.3s both;
+        }
+
+        .feature-badges { display: flex; gap: 12px; margin-bottom: 36px; flex-wrap: wrap; }
+        .feature-badge {
+            display: flex; align-items: center; gap: 8px;
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+            padding: 10px 18px; border-radius: 12px;
+            font-size: 14px; font-weight: 500; transition: all 0.3s;
+        }
+        .feature-badge:hover {
+            background: rgba(74, 222, 128, 0.05);
+            border-color: rgba(74, 222, 128, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-open-contact {
+            display: inline-flex; align-items: center; gap: 10px;
+            background: rgba(74, 222, 128, 0.1);
+            border: 1px solid rgba(74, 222, 128, 0.3);
+            color: #4ade80;
+            padding: 14px 28px;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+            margin-top: 8px;
+        }
+        .btn-open-contact:hover {
+            background: rgba(74, 222, 128, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(74, 222, 128, 0.15);
+        }
+
+        /* =========================================
+           FORMULARIO
+           ========================================= */
+        .form-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 24px; padding: 40px;
+            backdrop-filter: blur(20px);
+            position: relative; overflow: hidden;
+            animation: floatCard 6s ease-in-out infinite;
+        }
+        @keyframes floatCard {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .form-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, #4ade80, #3b82f6, #a3e635, #4ade80);
+            background-size: 300% 100%; animation: gradientSlide 4s linear infinite;
+        }
+        @keyframes gradientSlide { 0% { background-position: 0% 50%; } 100% { background-position: 300% 50%; } }
+
+        .form-header { text-align: center; margin-bottom: 32px; }
+        .form-header h2 { font-size: 24px; font-weight: 700; margin-bottom: 8px; color: #f1f5f9; }
+        .form-header p { font-size: 14px; color: #64748b; }
+
+        .form-group { margin-bottom: 20px; }
+        .form-group label {
+            display: block; font-size: 13px; font-weight: 600;
+            color: #94a3b8; margin-bottom: 8px;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 14px 18px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px; color: #e2e8f0;
+            font-size: 15px; font-family: 'Inter', sans-serif;
+            transition: all 0.3s; outline: none;
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: #4ade80;
+            box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.1);
+            background: rgba(255,255,255,0.05);
+        }
+        .form-group input::placeholder, .form-group textarea::placeholder { color: #475569; }
+        .form-group textarea { resize: vertical; min-height: 120px; }
+
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+        .btn-submit {
+            width: 100%; padding: 16px;
+            background: linear-gradient(135deg, #4ade80, #16a34a);
+            color: white; border: none; border-radius: 14px;
+            font-size: 16px; font-weight: 700; cursor: pointer;
+            transition: all 0.3s; font-family: 'Inter', sans-serif;
+            letter-spacing: 0.5px; margin-top: 8px;
+        }
+        .btn-submit:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(74, 222, 128, 0.4);
+        }
+        .btn-submit:disabled {
+            opacity: 0.6; cursor: not-allowed;
+            background: linear-gradient(135deg, #64748b, #475569);
+            transform: none; box-shadow: none;
+        }
+
+        /* =========================================
+           PASTO ANIMADO
+           ========================================= */
+        .grass-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 120px;
+            z-index: 5;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .grass-layer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 200%;
+            height: 100%;
+        }
+
+        .grass-blade {
+            position: absolute;
+            bottom: 0;
+            width: 6px;
+            border-radius: 50% 50% 0 0;
+            transform-origin: bottom center;
+        }
+
+        .grass-back .grass-blade { animation: swayBack 4s ease-in-out infinite; }
+        .grass-mid .grass-blade { animation: swayMid 3.5s ease-in-out infinite; }
+        .grass-front .grass-blade { animation: swayFront 3s ease-in-out infinite; }
+
+        @keyframes swayBack {
+            0%, 100% { transform: rotate(-3deg) skewX(-2deg); }
+            50% { transform: rotate(5deg) skewX(3deg); }
+        }
+        @keyframes swayMid {
+            0%, 100% { transform: rotate(-5deg) skewX(-3deg); }
+            50% { transform: rotate(7deg) skewX(4deg); }
+        }
+        @keyframes swayFront {
+            0%, 100% { transform: rotate(-7deg) skewX(-4deg); }
+            50% { transform: rotate(9deg) skewX(5deg); }
+        }
+
+        /* =========================================
+           RESPONSIVE - MÓVIL
+           ========================================= */
+        @media (max-width: 900px) {
+            .main-content { 
+                grid-template-columns: 1fr; 
+                padding: 40px 20px; 
+                gap: 40px; 
+            }
+            .form-section { order: -1; }
+            .info-section { order: 0; }
+            
+            .header { padding: 16px 20px; }
+            .info-section h1 { font-size: 36px; }
+            .form-card { padding: 28px; }
+            .form-row { grid-template-columns: 1fr; }
+            .contact-panel { padding: 28px; }
+        }
+    </style>
 </head>
 <body>
 
-<!-- INTRO OVERLAY -->
-<div class="intro-overlay" id="introOverlay">
-  <div class="intro-ball"></div>
-  <div class="intro-ripple"></div>
-  <div class="intro-ripple intro-ripple-2"></div>
-  <div class="intro-text">SYNERGIABIO</div>
-</div>
+    <!-- Luciérnagas de colores -->
+    <div id="fireflies-container"></div>
 
-<!-- Background -->
-<div class="bg-aurora"><div class="aurora-blob"></div><div class="aurora-blob"></div><div class="aurora-blob"></div><div class="aurora-blob"></div></div>
-<div class="grid-overlay"></div>
-<div class="fireflies" id="fireflies"></div>
-
-<!-- Header -->
-<header>
-  <div class="header-content">
-    <div class="logo-container">
-      <div class="logo-glow"></div>
-      <img id="headerLogo" alt="SynergiaBIO" class="logo-img">
+    <!-- Toast de copiado -->
+    <div class="copy-toast" id="copyToast">
+        ✅ Correo copiado al portapapeles
     </div>
-    <button class="support-btn" id="supportBtn">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-      <span>Contacto</span>
-    </button>
-  </div>
-</header>
 
-<!-- Support Panel -->
-<div class="support-overlay" id="supportOverlay"></div>
-<div class="support-panel" id="supportPanel">
-  <button class="close-panel" id="closePanel">✕</button>
-  <div class="support-panel-header">
-    <div class="icon-circle">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#052010" stroke-width="2.5" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-    </div>
-    <h3>Contacto Directo</h3>
-  </div>
-  <div style="text-align:center;margin-bottom:1rem;">
-    <img id="panelLogo" alt="SynergiaBIO" style="display:block;margin:0 auto;max-height:48px;width:auto;max-width:100%;object-fit:contain;">
-  </div>
-  <a href="https://wa.me/56932800124" target="_blank" class="contact-item">
-    <div class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
-    <div class="contact-info"><div class="contact-label">WhatsApp</div><div class="contact-value">+56 9 3280 0124</div></div>
-  </a>
-  <div class="contact-item" id="copyEmailBtn" style="cursor:pointer" role="button" tabindex="0">
-    <div class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
-    <div class="contact-info"><div class="contact-label">Correo</div><div class="contact-value">jose.valdes@synergiabio.com</div></div>
-  </div>
-  <div class="copy-toast" id="copyToast">Copiado</div>
-</div>
+    <!-- Overlay del panel -->
+    <div class="contact-panel-overlay" id="panelOverlay"></div>
 
-<!-- Form Page -->
-<div class="main-container">
-  <div class="card">
-    <div class="card-header">
-      <div class="card-header-bg">
-        <svg class="plant-decoration plant-left" viewBox="0 0 180 200">
-          <path class="plant-stem" d="M 20 180 Q 30 140 40 100 Q 50 60 70 30"/>
-          <path class="plant-leaf" d="M 40 140 Q 20 130 15 115 Q 30 120 45 130"/>
-          <path class="plant-leaf" d="M 50 100 Q 70 90 75 75 Q 60 80 50 90"/>
-          <path class="plant-leaf" d="M 60 60 Q 45 50 40 40 Q 55 45 65 55"/>
-          <path class="plant-leaf" d="M 70 30 Q 85 25 90 15 Q 75 20 68 28"/>
-        </svg>
-        <svg class="plant-decoration plant-right" viewBox="0 0 160 180">
-          <path class="plant-stem" d="M 140 160 Q 130 120 120 80 Q 110 50 90 20"/>
-          <path class="plant-leaf" d="M 120 120 Q 140 110 145 95 Q 130 100 115 110"/>
-          <path class="plant-leaf" d="M 110 80 Q 90 70 85 55 Q 100 60 110 70"/>
-          <path class="plant-leaf" d="M 100 50 Q 115 40 120 30 Q 105 35 95 45"/>
-        </svg>
-      </div>
-      <div class="float-badges">
-        <div class="float-badge">✨ Soporte</div>
-        <div class="float-badge">⚡ Eficiente</div>
-        <div class="float-badge">🌿 Rápido</div>
-      </div>
-      <div class="card-header-content">
-        <div class="tag"><span class="tag-dot"></span> Soporte Activo</div>
-        <img id="cardLogo" alt="SynergiaBIO" class="card-logo-img">
-        <p class="subtitle">El conocimiento al servicio de la vida</p>
-      </div>
-    </div>
-    <form class="form-container" id="supportForm" action="https://api.web3forms.com/submit" method="POST">
-      <!-- Web3Forms hidden fields -->
-      <input type="hidden" name="access_key" value="a017b9d0-c04a-44ba-ba32-ef174d5192e7">
-      <input type="hidden" name="from_name" id="hFromName" value="Portal de Soporte SynergiaBio">
-      <input type="hidden" name="redirect" value="https://josevaldes-sudo.github.io/soporte-synergiabio/gracias.html">
-      <input type="hidden" name="replyto" id="hReplyTo">
-      <input type="hidden" name="name" id="hN">
-      <input type="hidden" name="email" id="hE">
-      <input type="hidden" name="subject" id="hS">
-      <textarea name="message" id="hM" class="hf"></textarea>
-
-      <div class="form-row">
-        <div class="form-group">
-          <label><svg class="label-icon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Nombre</label>
-          <div class="input-wrapper"><input type="text" id="fN" placeholder="Tu nombre" required><div class="input-glow"></div></div>
+    <!-- Panel de Contacto (OCULTO) -->
+    <div class="contact-panel" id="contactPanel">
+        <div class="contact-panel-header">
+            <h3>Contacto Directo</h3>
+            <button class="close-panel" id="closePanel">&times;</button>
         </div>
-        <div class="form-group">
-          <label><svg class="label-icon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> Correo</label>
-          <div class="input-wrapper"><input type="email" id="fE" placeholder="correo@empresa.co" required><div class="input-glow"></div></div>
+
+        <div class="contact-card" id="copyEmailCard">
+            <div class="contact-card-icon">✉️</div>
+            <div class="contact-card-info">
+                <span class="contact-card-label">Correo Electrónico</span>
+                <span class="contact-card-value">jose.valdes@synergiabio.com</span>
+            </div>
+            <span class="copy-hint">📋 Copiar</span>
         </div>
-      </div>
-      <div class="form-group">
-        <label><svg class="label-icon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg> Asunto</label>
-        <div class="input-wrapper"><input type="text" id="fS" placeholder="¿En qué podemos ayudarte?" required><div class="input-glow"></div></div>
-      </div>
-      <div class="form-group">
-        <label><svg class="label-icon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="17" y1="18" x2="3" y2="18"/></svg> Descripción</label>
-        <div class="input-wrapper"><textarea id="fM" placeholder="Describe el problema o solicitud con el mayor detalle posible..." required></textarea><div class="input-glow"></div></div>
-      </div>
-      <button type="submit" class="submit-btn" id="submitBtn">
-        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-        <span class="btn-text">Enviar Ticket</span>
-        <div class="spinner" id="spinner"></div>
-      </button>
-    </form>
-  </div>
-</div>
+    </div>
 
-<!-- Footer -->
-<footer>
-  <div class="footer-badges">
-    <div class="badge"><svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Cifrado</div>
-    <div class="badge"><svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Respuesta 24h</div>
-    <div class="badge"><svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> SynergiaBio</div>
-  </div>
-  <div class="brand-name">SYNERGIABIO</div>
-</footer>
+    <!-- Header (solo logo) -->
+    <header class="header">
+        <img src="logo.png" alt="SynergiaBIO Logo" class="logo-img">
+    </header>
 
-<script>
+    <!-- Main Content -->
+    <main class="main-content">
 
-// Intro animation
-(function() {
-  var o = document.getElementById('introOverlay');
-  var done = false;
-  function dismiss() {
-    if (done) return; done = true;
-    o.classList.add('fade-out');
-    document.body.classList.add('loaded');
-    setTimeout(function() { o.style.display = 'none'; }, 700);
-  }
-  if (document.readyState === 'complete') {
-    setTimeout(dismiss, 2400);
-  } else {
-    window.addEventListener('load', function() { setTimeout(dismiss, 2400); });
-  }
-  setTimeout(dismiss, 5000);
-})();
+        <!-- Sección Izquierda - INFO -->
+        <div class="info-section">
+            <div class="status-badge">
+                <div class="status-dot"></div>
+                Soporte Activo
+            </div>
 
-// Fireflies
-(function() {
-  var c = document.getElementById('fireflies');
-  var colors = ['#00ff88','#00d4ff','#a855f7','#ffd700'];
-  for (var i = 0; i < 15; i++) {
-    var f = document.createElement('div'); f.className = 'firefly';
-    var s = Math.random() * 3 + 2;
-    f.style.width = s + 'px'; f.style.height = s + 'px';
-    f.style.left = Math.random() * 100 + '%'; f.style.top = Math.random() * 100 + '%';
-    f.style.animationDuration = (Math.random() * 15 + 10) + 's';
-    f.style.animationDelay = Math.random() * 10 + 's';
-    var col = colors[Math.floor(Math.random() * colors.length)];
-    f.style.background = col; f.style.boxShadow = '0 0 10px ' + col + ', 0 0 20px ' + col;
-    c.appendChild(f);
-  }
-})();
+            <h1>Soporte Técnico <span>SynergiaBIO</span></h1>
 
-// Input glow
-document.querySelectorAll('input, textarea').forEach(function(input) {
-  input.addEventListener('mousemove', function(e) {
-    var rect = input.getBoundingClientRect();
-    var x = ((e.clientX - rect.left) / rect.width) * 100;
-    var y = ((e.clientY - rect.top) / rect.height) * 100;
-    var glow = input.parentElement.querySelector('.input-glow');
-    if (glow) { glow.style.setProperty('--x', x + '%'); glow.style.setProperty('--y', y + '%'); }
-  });
-});
+            <div class="company-motto">
+                El conocimiento al servicio de la vida
+            </div>
 
-// Support panel
-var sBtn = document.getElementById('supportBtn');
-var sPanel = document.getElementById('supportPanel');
-var sOverlay = document.getElementById('supportOverlay');
-var cPanel = document.getElementById('closePanel');
-if (sBtn) {
-  sBtn.addEventListener('click', function() { sPanel.classList.add('active'); sOverlay.classList.add('active'); });
-}
-if (cPanel) {
-  cPanel.addEventListener('click', function() { sPanel.classList.remove('active'); sOverlay.classList.remove('active'); });
-}
-if (sOverlay) {
-  sOverlay.addEventListener('click', function() { sPanel.classList.remove('active'); sOverlay.classList.remove('active'); });
-}
+            <div class="feature-badges">
+                <div class="feature-badge"><span>✨</span> Soporte</div>
+                <div class="feature-badge"><span>⚡</span> Eficiente</div>
+                <div class="feature-badge"><span>🌿</span> Rápido</div>
+            </div>
 
-// Copy email
-var copyBtn = document.getElementById('copyEmailBtn');
-var copyToast = document.getElementById('copyToast');
-if (copyBtn) {
-  function showToast() {
-    copyToast.classList.add('show');
-    setTimeout(function() { copyToast.classList.remove('show'); }, 1800);
-  }
-  function doCopy() {
-    var email = 'jose.valdes@synergiabio.com';
-    if (navigator.clipboard && window.isSecureContext) {
-      navigator.clipboard.writeText(email).then(showToast);
-    } else {
-      var ta = document.createElement('textarea');
-      ta.value = email; ta.style.position = 'fixed'; ta.style.opacity = '0';
-      document.body.appendChild(ta); ta.select();
-      try { document.execCommand('copy'); showToast(); } catch(e) {}
-      document.body.removeChild(ta);
-    }
-  }
-  copyBtn.addEventListener('click', doCopy);
-  copyBtn.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); doCopy(); } });
-}
+            <button class="btn-open-contact" id="btnOpenContact">
+                Ver información de contacto
+            </button>
+        </div>
 
-/* Form submit - Web3Fields + Zammad mapping */
-var fm = document.getElementById('supportForm');
-var bt = document.getElementById('submitBtn');
-fm.addEventListener('submit', function() {
-  var n = document.getElementById('fN').value.trim();
-  var e = document.getElementById('fE').value.trim();
-  var s = document.getElementById('fS').value.trim();
-  var m = document.getElementById('fM').value.trim();
-  
-  document.getElementById('hN').value = n;
-  document.getElementById('hE').value = e;
-  document.getElementById('hS').value = s;
-  document.getElementById('hFromName').value = n; // Nombre del usuario dinámico
-  document.getElementById('hReplyTo').value = e;   // Cabecera Reply-To enviada a Zammad
-  document.getElementById('hM').value = 'Nombre: ' + n + '\nCorreo: ' + e + '\n\nAsunto: ' + s + '\n\n' + m;
-  
-  bt.disabled = true;
-  bt.querySelector('.btn-text').style.display = 'none';
-  bt.querySelector('.btn-icon').style.display = 'none';
-  document.getElementById('spinner').style.display = 'block';
-});
+        <!-- Sección Derecha - FORMULARIO -->
+        <div class="form-section">
+            <div class="form-card">
+                <div class="form-header">
+                    <h2>📩 Enviar Ticket de Soporte</h2>
+                    <p>Completa el formulario y te contactaremos a la brevedad</p>
+                </div>
 
-// Logo base64 injection
-var LOGO_B64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABN4AAAEKCAYAAADNZpi4AAABN2lDQ1BBZG9iZSBSR0IgKDE5OTgpAAAokZWPv0rDUBSHvxtFxaFWCOLgcCdRUGzVwYxJW4ogWKtDkq1JQ5ViEm6uf/oQjm4dXNx9AidHwUHxCXwDxamDQ4QMBYvf9J3fORzOAaNi152GUYbzWKt205Gu58vZF2aYAoBOmKV2q3UAECdxxBjf7wiA10277jTG+38yH6ZKAyNguxtlIYgK0L/SqQYxBMygn2oQD4CpTto1EE9AqZf7G1AKcv8ASsr1fBBfgNlzPR+MOcAMcl8BTB1da4Bakg7UWe9Uy6plWdLuJkEkjweZjs4zuR+HiUoT1dFRF8jvA2AxH2w3HblWtay99X/+PRHX82Vun0cIQCw9F1lBeKEuf1UYO5PrYsdwGQ7vYXpUZLs3cLcBC7dFtlqF8hY8Dn8AwMZP/fNTP8gAAAAJcEhZcwAALiMAAC4jAXilP3YAAAUkaVRYdFhNTDpjb20uYWRvYmUueG1wAAAAAAA8P3hwYWNrZXQgYmVnaW49Iu+7vyIgaWQ9Ilc1TTBNcENlaGlIenJlU3pOVGN6a2M5ZCI/PiA8eDp4bXBtZXRhIHhtbG5zOng9ImFkb2JlOm5zOm1ldGEvIiB4OnhtcHRrPSJBZG9iZSBYTVAgQ29yZSA5LjEtYzAwMiA3OS5mMzU0ZWZjLCAyMDIzLzExLzA5LTEyOjQwOjI3ICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgeG1sbnM6cGhvdG9zaG9wPSJodHRwOi8vbnMuYWRvYmUuY29tL3Bob3Rvc2hvcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgMjUuNSAoMjAyNDAyMDMubS4yNDg5IDJkMzZkNWEpICAoV2luZG93cykiIHhtcDpDcmVhdGVEYXRlPSIyMDIzLTA3LTI3VDExOjE2OjUxLTA0OjAwIiB4bXA6TW9kaWZ5RGF0ZT0iMjAyNC0wMy0wNlQwODo0MDo0My0wMzowMCIgeG1wOk1ldGFkYXRhRGF0ZT0iMjAyNC0wMy0wNlQwODo0MDo0My0wMzowMCIgZGM6Zm9ybWF0PSJpbWFnZS9wbmciIHBob3Rvc2hvcDpDb2xvck1vZGU9IjMiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NzNmMzhiYTAtOGUxYS05MDQxLWI5YzQtM2Y3MGRiNTNmODJhIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjczZjM4YmEwLThlMWEtOTA0MS1iOWM0LTNmNzBkYjUzZjgyYSIgeG1wTU06T3JpZ2luYWxEb2N1bWVudElEPSJ4bXAuZGlkOjczZjM4YmEwLThlMWEtOTA0MS1iOWM0LTNmNzBkYjUzZjgyYSI+IDx4bXBNTTpIaXN0b3J5PiA8cmRmOlNlcT4gPHJkZjpsaSBzdEV2dDphY3Rpb249ImNyZWF0ZWQiIHN0RXZ0Omluc3RhbmNlSUQ9InhtcC5paWQ6NzNmMzhiYTAtOGUxYS05MDQxLWI5YzQtM2Y3MGRiNTNmODJhIiBzdEV2dDp3aGVuPSIyMDIzLTA3LTI3VDExOjE2OjUxLTA0OjAwIiBzdEV2dDpzb2Z0d2FyZUFnZW50PSJBZG9iZSBQaG90b3Nob3AgMjUuNSAoMjAyNDAyMDMubS4yNDg5IDJkMzZkNWEpICAoV2luZG93cykiLz4gPC9yZGY6U2VxPiA8L3htcE1NOkhpc3Rvcnk+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+40aSLwAAWXVJREFUeJzt3b+S2lj3//vPPDUx3d/ohM1zBWYSUuMrMBOhzHJ2MjMXQBkXFzD4CqyuOoGIHvkKRp2SDH0FDx2e6NtQ9UvPnEAbG7e7QYL9RxLvV1WXZwy99mq3AGlp7b1/+eeffwQAAAAAAACE1pn0e5IGktaS8u1s+RgwnbP9QuENAAAAAAAAIXUm/YGkqaTXe3+9kTTezpZJgJSsoPAGAAAAAACAIDqTflfSXNLbA0/7bTtbrnzkY9u/QicAAAAAAACAy9OZ9MeSVjpcdJOKwlwj0fEGAAAAAAAAb0yXW6Ifp5Ue82Y7W+Yu8nGJjjcAAAAAAAB40Zn0hyq63KoU3aSiUNc4FN4AAAAAAADgXGfSn0v6j6SrE779pjPpx1YT8oDCGwAAAAAAAJzqTPqJpA9nhpmen4lfrPEGAAAAAAAAJzqT/rWkXNIrSyEbtdYbHW8AAAAAAACw7sSi2+bI4+MT0wmCwhsAAAAAAABcyFS+6PYg6Y2OF9beml1RG4HCGwAAAAAAAKwya7qV3bn0q6TetrbMt7NloqIId0h8emZ+UXgDAAAAAACANZFJfyzpXcmn/7GdLYfb2fJx7+/mR74nrp5VGBTeAAAAAAAAYEVn0h9I+rPk099vZ8v5M3+fHPm+m86k3yufVTgU3gAAAAAAAHA2s5lCUuKpG0m/mWmlPzHdb7dHYgzLZxYOhTcAAAAAAADYMJV0U+J5w+1suTrynOxYjBLjBEfhDQAAAAAAAGcxU0w/lHjq++1smR970na2zI48pexuqUFReAMAAAAAAMC5piWe8/ml6aUv+HroQVPsqzUKbwAAAAAAADiZKYC9PvK0u+1sOa4YOj/yeK9iPO9+DZ0AAAAAAAAAqjEbGfQkqczUTcemRx7fSIpPiLs68njvhJhe0fEGAAAAAADQIJ1JfyrpfyX9JemvzqS/7kz6caBcejre7TbfzpbrqrFLFBS7VWP6RuENAAAAAACgITqT/ljSxyd/fSPpS2fSzzuTftdzSuMjjz9sZ8vpGfE3Bx67PiOuFxTeAAAAAAAAGsB0l/154CmvJa1Mcc6X4ZHHp2fGXx14rPY7m1J4AwAAAAAAaIZ5iedcSfqzM+lnZh04Z8ymClcHnrKpuItp61B4AwAAAAAAqDmzhtuxtdT2vZW0Nl1yrgyPPJ44HLsRKLwBAAAAAADUmOlcm5/wrVeS/na48ULvyOOJo3Ebg8IbAAAAAABAvY11eErnMV/MTqi2HerA22xny5WDMRuFwhsAAAAAAEBNmW63sYVQHzuTfmIhjqRvGz0cklsaqnvgsQdLYzhD4Q0AAAAAAKC+Yp3X7bbvncXi2/WRx1eWxrk58Nja0hjOUHgDAAAAAACor/GRx+8kcVD2eL/Xv369+y//fN235v9131o/f/y01+68153f3z8O9S3301L/9qL3+p+/e2i4/z233306v6+p/1uT/4/1s66i8AYAAAAAAKBmzO/sE9528f11O1umO3/O2/04f/j/44/2eP4L98fP3+389Xvf5x31S/y3834v3T+MvH/P2bO60sI42vX9S32m8AYAAAAAAFAPp/22vf0m/d+82a+7/3O91yP/9m1P8c1v4s+p/q/p3sTj/3z/q9//E16/8+/X53p+sL+/uH/v/nF8fO3L3H02U3gDAAAAAACol4v8pt63p/k2c/qf24/8uH/8kE8r3H1fA/M/0/03/9mH94f71/39y+S0/P6F/tP3/3P8e40/4e/L+/3v08E0v/d46qH3s83p4P77LzLd+pCfv5/u91zL/T/p/4/2//L86L5e748f3u/j889f+/2sO9732f913H33rK6f83tXqA+143qH69j4/4f2/a9/3+/n+/Hn33/9x/Hnfv+e0v9vO1sO3U9J/4qC24Om6SIfR/I/RNGor/nvdT8A1i35/33a41z4I3m0S3O92L23j2s5yT03c3u3j/k9eJd2mY65I+/3353v/6RrnS7p3493e8e/X+zX+b+/e+2I/P/d3780P/A+d/fTcefpP1Xp9m/XfG3s3/O+m712b7r/X7+/m9y963u5/z8d/N90X+vXfU3sz/s/Nf++220v7q+v94+fr68393P/X98fdl3L476v1pE35/d5c95Pdr2fn24v4+59f7T34T1+s1I/cWj6i6LRXEVBbqqimCRpkeaLNOp+/L9T/7L/u+u3c5fL+v955+T3j+f+91//PqU/S9Nf/nn12u1c7//xP0vS6O0/f3v2y3T+88df/9fU/1q/m/vff/3L9P9f/2P4P9N93//74e+Xp3s/T9/X4/Pze7/v3//9v/38X/e/2/1/1P2///x33ffU+f95r/c/m/1S9/v30f2f/3r/ffbH03XsfvL8/0v3+7fS9a3//fP//33u2q91/rGf3+f294/Xp589vBf+/e14nfz+/vv/2O+/5/687+S31+n3T+fv31f/8/v4m1Xw3l5//O9/7a3v39/fn9/zX//+03s3r/vn12b32vf0+LnfS1s379d/u87e35vvp6f/f2n5v++m13a/S/ffM7s31v1u8/ff0f79y/b///y657+7/21e/9yX3//e03f/p25+1O+3+7p1sJ/m99I0XQz3fmd//359a3+Pq9L135a39/rQ/XbQz++1vB/fXj883/x+frzf+/3p3+/30873x2v2+PlS//n543uX/v3e29f3fvx1+fU245/ffz943r2X193e/fnD13P775Xb8O3/5p//3/H5iX/8359/p//61/uXf/XfO/aTev/Xf0/O4N+P5I/815L+E56d3vnv2A/c1/I28N/b5cbf/3zRzX5x81v6/6b7389c9/mS79s72+30X/2qA1S4vTzdf/f37v7j5sI73v2e+L8/9e1o/N68vvfAdfjefK687u/2704qPld2sNtf3Nf7fvx49u71S993m32I263r6sL3/aDrcp/f3u0+7e57Z4/r49P9s7eHrztd599vfr7q/u/++bU7P3M3fX30SdLf/vOfL6X/X/p7/m7tXprmS77v/55e3++p2I3x10+X4Xvv5yO9afr53n9+d3/y9/ffm+5D++ePff486P9v/3nxfvv9e3e/+fM3r5/fX9//O/63X/8+2+X3/u/X7+/v3x38706P6+I23e//p0f3yvfb0T//44X3xXp/aPpL+/p8X/77f7qE/p2m/92e/8e//+1/5+n33v8e/r9O6L7m/09f+tP2fN5vLvf061/l6f92p4P/N6H+/6m3v1Xv4Hfp2f7/41uS89L2567+U9vj0833l+/e2z+fXtf34X2//t78e3m/p13H1r3L2//z/X06mG61z/f16+Nf3/p7e29f5P+/6f2bTse/c6p78m2a9iRptffXkE+3p9f727O9/+/l6f5O3m/vL3f393/9/09v2f7Pbfm/k38e15vbfR9v+/2vT8+/n/99327I4D1a3+v13jS2u0f6/1uS3x8S+k5p3789//f/9mJv3v7oGfE43s22O283uTftzfv05f9+u/97//S8lX+f04X++p3++8P9O73o/vfD/evz+Nq2z9+d7x9v66/T21/p/lP3tI6/X3p9//S/jrf/n836eP++u/40f7/9//k+fJ33/2O2x2/m/d7e/m7d3fO//3//5O8X2f9/+1+T/7633/93k6aL//X/S9d9fUfO2f/3b3/5/z92fS00m7qYptf76aG35uvS3L+f7qf3+t4m7//pXnrv4ft90L34m0a/G+8x9/p1L7x+/jT5u/m/9/uR7p4m1+n5++7+/3u//fn9/vf63d/v//39mXk33x1u3vO313L/2//vv2e/fvd1/+m76fne1/N9/evD43u6vdf/9Mv33o1e93t/ur/fL+XzI/f/S/9+/3s8vd/fT3//fvX6m2j++O7q+Lbf/Nf981u3L//Xw015m5b+0y/+vv/P/X/3//8uN2Xyv3mG9/9X/n/N0vXvvp3//1L6//f/e71b3e9a/e9X53e7X/e1+/vf03//7//3v+7vX//3f//XpXv//202f//uOqbf+/q///ff2v//8Ovf43f6ffXbfv9e/P/X/9v/f3m/f//63+d39/+2f1/Tf/+P3X/f/3x//3e/+Z48f//j/m9e4f/u3/99X8///P823f//S9s9/f5/f/v3p69/7f/+S2eT27S3/4f//v///vXz/v4v//v///qS3v3b4/m/3///12e3/8vv/9/D07f//b4//7+//7t3/f//3p+d///d7u+///9X4e+5P/e/+N14e//vf9e/+l73n3X++e3L43S2v9/312//3++//d/3v27//8ff/88s39//+7L2/x//ff17vv7/68ffP/0//b7f//f7//+8v+/vD21a//5+/v2932976f08Xf9//3/s33/+133//e2p8+/6+f3+3b/fvX7u+ffv8fPft3+f/z3f3/ff1///6fn///4e823b1//+/9fX/fX9e1+e/T1/+b///s+//3u9+//21f/+/l7/99e693//+t2//+8/X9/+0+1d37///v/vS//fvff/9v9u9d273//vf81vP7///u///S8f/33//f82+v9/e3//++9e29/X7ff+///+/vD32v9f9vv//fvf+f3f///2e4///4//v3ffv/X++///7m/v/+9u9//e///f/r++/e/m+X0fvv+v++/u3++vv//f+/1/fvX///f/b9ff///f+3//Sff/0++v//9//+3++e+3/v19//f9v9e3///3+d/v//+//+/99///vS825Pz33//z283f/d/v/v/3/e+Xf/y+//f+/x727192++a///ffv///+/+d68bX/33v/v/2///r379/eX9/1//fv3v///837f+/p5e2/f//57f339fX7///vve//7//+//3f6fv/9///+/u5+/9e/3///+//e5f9u5//9///u/9/+3r//3f/fv/v9u/+f3fvv9/vv9ff3v///p3+/X//vvf///3d///f8++9/39//e/p/f+/v3/+/d//+//f3b//9X+/e/r6f/v+fff++/vX9/+333/+/b2++6+Xv//3+/71/fv///+/e89/3/++f/+S/u35/vvX/+/+/f+/b///49v3///v/+9P/z3+3p//77f7///f5v/f9f3X++m/+////6f1e///9vv7+//3//2/+//3//f3S9m+Xm3f+f9++/S+fn//9/1//+//t4ffvv/++/99v3//f3S7m5+/d++f9///ff7///9v3f+ff++/S715u9/S7u/30e3f///30/9vv///f8ff97S1/S/t//f0/+e/+///0///9+3f++/s/5ff2//a31/S8ff/++/X/f93//v14//+S3v/s///3v5fvv/+/3v30//9//++/ff++/f/e///+/v//u3e2//831///f5ff99/ff2///s/12///5f/f0ff52/p/+//p0/3d/e///9p++///S/v//v2S3v++/f/e/33//++/9/7+ff/v/7//2/+7++/+/9p/9/ff82++/9vvf///22///8v/X30/+79///39/2//33S8f++/X30+/X//2++/s///732/+ff+e/8+2+ff///v1++/2f9+e3e++/3///9f9392++/8+9//53////f0//b//e++/421//7/x1///89vvf///++/u/+vvf9e///++/33/+/9e30///f+3d//e17++/++/p///aX/f9393///S9p7/32/++/s///+//1/s/3/Xff+/3X//++93///2e/433f/3/X3//223/s/172230+/S8++/d++/f4+/3/++/b++/812/9++d3//f93///ff++/b+/3S9d/0+/X//0+/S+f++/f///3411///0v3f2////ff8+2+//1/r++33//13////ff1///e1++/ff+++5f1+//38+/83++S3f139++/v/s////eX8+++33/++9f0/3X/f9///+d2+S314/e///v0+//3f//6X7f42///4f+//a2///X/933////vvvv9e//7////b9/12ff/+/fX++a/p///4+/233ff//4f+ffd3/++/v+/f+/s/183//39//v2///a////+/f//8+//2f82++1ff/v/99f1+++ff///3v1//f33///2//eX5//9+++ff+u5//X/f4/0++/d///s+/v/s//03++S830f//p//+e1///ff0ff/42+//93e++/u+S++/p3++3//v+/X//34/f/s////f5f/+6X/f6fX///a238//t33///t/f4f++/p/+X8+ffd++/431//r8+++3ff9ff++S7v///0v///1////s//b1+vv0///7e2++0v10///ffv/+l///e/01/f9Xv+3fvv82//f7ffs/03/++X9p0+f9e/3X89//2/v5/3++/e///ff///s++/5/5//++s//4//9///+39ff//bX5f//950///39e+++d83/X+//+342++/ff////10+/3X//v/0vf/+X///43ffvvX3f0//f+/vS6d7X//u/7//021f1+/ff8/3X//+S9vff///+/n+f+t/+2a6e9///s////vvX//f42++s/fff+/S6f///1v6/3ff///v9/+d+0///99///S715+a6XX18f2f/392fff++/f//0vf++v277/+e12///X3X9v9ff9+/S+/S6S23++/8d83///ff++943ffv/c3f/+3X/5+++//f4///r++f/b+m2///+S6b+e///v///e9///S1++/b/3339///f53++/ff511f//eS3S9e1/f7///ff2++98+72ff3/9e7+/f//9//33S832++S+/sff03d3f27p7///8//6ffpX//34f//fff0//1//++2//f9S/fffvv//+//33e/5//++34///+1//ff++X/v1f9/d++/s34//bX72f8//++s/+f///ff/b++X++Xf993f/s///e7u/S6b713v9///3//vS9p//+7S++/S6e118/+/pS0f//ff5f/++/9S/s99++++/d///fffS+f/+1//s+9++S0/++m/s/f++28/Xf2ffS7v7v/+X9fS3r9S/+m//43X//73f+3/S/++l//01f/3///82/4/+b/+S/39X3ff/+S3//x///ff9e+df9//1/+2/X//Xv/v/+9fX14+/2///a14++/8++27//+/ffS/d43f0//a1f7///a+/vv0//337//fffX0S+3S+a319fT+ffv///9S4eS++/p//v9/e/+03S+b///v3ffpXv/s//0v222Xf//+S++/d7u+ff57f20vf++m23+2++/024///++3//e+//d2/+s//0v/d/ff29+++/+++///u8+/4f8fS1//+X7//x/++/30/7///+d7///f+77/ffv2/+34////S29//fffX///e1/+d8/vS+//+//+++f+//8+//f++/x1++/+90vv3p3pS9++/89v9S9e//X5++87Wf//f1//e/0ff/X0Xv2++/99u3++39Xv/+9ff///+++e1++/v/+vvv/S0++/8/1++1///e+//d3///v8/p/S3Xf8///4////1Xf8++/f/23f+298ffX3vv/s33++/+///e///863/+l++fffffv89v/++s//+//43v/+++fffS19//369///d8fff5/20/++/3++/33e++9ff2+/9X//ffu1///9+/fff14+/fS8ff52/r3///379//e+XvS6b////7///9v2////++/20/ffvff89vS3e/e++/uX//2f7v++/s14+fX07X19fff4f014/d/+l/r//vv///f+//vfff99/2///423f/2++/v2ff0X7f42ff+/u+/d3///d++/S7+e//ff04//+d72S3///ffpXv///9++/S6eXp5+n33X3/fvv0+//f+/bS42////8//uX///e/32++/0ff+/f2+f/++//f2++/332ffs//vv///S016f+7++/3f+f211v82/s///9d/r22//S///9v3/16/d/+17f++l//83/+++f341X27814+d//e+fS//+/s//++v/+e/+0f41fff9X///e+//983/v2++/8/f///S07p27163f//m83e+e19s96S9/t/v3//33///pX9///u++/e/ff2793S++9+6fS6dff++l+v+8/X/2S5d++e///S22+eff/f4/X36f01v3///f88++/3fX303d/10uS6e3S3/2/v96/ff2/eXp9vvvfX///ff///2/e++/fff43++/f90v03++m2f///03//v3Xff/s08fff6ff0ff1/+///53r+e023//r///9ffv0Xf5/ff///9r2m323////4ff/+/X8//+//5f/S378f8///u0+7e15u+//s913XpffX+/uXff9vX/s/7vS29++/4f+//e2/v0vf///1s1/22/+ff+++ff7Xff++8ff1/+e9fff339s1f/S8021///d1883a/vff73+/a11/61/+vff/7a+//2/v8//fX///f1ff+ff+e2S4f33r++/v/+X312e/f/31p7f0f///e2S2f883f3///d/+31/+d6bX7S///e/+ff+//vv3972+S4b++/m0f2ff523+/11/v9/+S2a8ff///e///903/+////2++/ff//9e+Xv//S26eS9a2/f96Xf7b///v9e++/90/S28ff+//vX31r59/b///+l++d35//++362143S5d17f//fff+//1r9////S6f/+l37++/fvv0vf23eS3s831///vv98++/f18/f3e8f813e33/e13f9fff///d3/v9/6+ff/4f23e/+fffS/p///X9vv9e///+/Xfff//ffS1++/8/S6fS7e1+ffd///p///++d376fe7v0ff6X/e20f26++//+2fffX++S2++/53e++/p2ff++/ffff+//9v+/v+1///14/S6b74f3ffv7+l3+1v++/X///f0///s/fffv1/+l/+e1v82/ff7p23e6fX+S0X9u//v4+ff/+d83d3ff3+fff//4ff0v0++/8/1///2/+l++/4ff521++ff3///e++/++/3++S5f+18++/f+//0///a239f1///ffs12a32///X//p/rff+/5++/8++f0///0vf3p3e1e/b+///fff/0f1++/+/X9v///vv///1///1f++f///ff/22e/vvp3X3s/4++/9///+//f0//5ffv0vf2X///f0Xf///d1///2//ff993p0e1vS+/+++sff+e/83+S0d++/1438/98++/u++333//3ff/+S9+/s12++/53u+++ffu+//fffS25m3f+a/e7f//+X//+/ff1/+n/+18++/98/vvv/X++/52/p31///m//S/f36/7a+Xm3e1s++/rS7v0S+X7322/eX///++2+/S1//7S8f/+//4fffvv///X//++223///a0800X/d3+/d/ff5f/b0+++d93/fffff73vv9s1+e3S+f9//vv9///b/+1//8+//1/S2/6fS2/f+/X9fff/p//1ffpS+////s3/+vff0vf0/ff////++/9/+df8//81/921v/ff22a++/ff1///+ffvS+9832///033///e3e/v//f4/a1+/3vvp/b1ff2/+vvv88///s1/ff4/f26ff0/+f5fff+6a0++f30327f/73e9e1fff++eX++fff/430fff3///S+f231/+f0X9vv0f63///e/+v8////1/+ff////vS8/11/X3ff/+13///r/X///f/+/+++//a/p2/fX26ee/9+/9///ffu83++l+//v0///+l///0vX1/+/p1091/2f3ffv39/+l///1v/9S3fff++S1ff++/f2/3//1///5e9///S094S/m0ff1//5//ffff++/f+d8S++/2++/X/v8///e158+03ff5/+l0///pS96/r/u1910uS6e118/+/pS4+/e8ff531++S6eXp5+3f1X11/vv433ff9Xff++/p8933+/f6fvv/5ff++/u++/8205+2+/0f614+//f3X0/S69ff///v/ffr52f9fff+ffS8ffu//s9p83+e/3S7++/0fff82++/ff++87f+//X///b93+++ffS//ffv9f///fff883/vff++v//d3++//f29++/v+9///S4e8d4239vf1++ff93e36e+/f2f/3fvv232ff13Xp3ffpffX++m++/262S4S062539ff5/d2f///fff94f+076/vvS96/+e//05+f5f27p7s2+f802//3+e/f4f/9S/3S5fff6S4++ffXfff7f9S6X++/43//++/2130fff22+ffd/fff+/ff2//S1///8+//1/S22S72++/m+s0/+a7///6Xv//a6efS5fffffff/831++Xff3411/8+/ff3fS+ff3+ff1v88++/83+S2ff++/f/ff/e6X++a2Xf1f/f9++l/+fffvvfff910u++/X//94/v2f5S2a+/pS027ff///e+fS0f//ffs12b322a30f//p+/S+/p8//e//++X9f4/+f++/S/s/S//df/02S4e9++ffd+1//p///++sff2////+3S7/b9/Xfff///b/+2a2e///4fff+sfff7/m/+a+9+ff++/98ff0+ffd++ff+//0vv/X/+d83ffs3X+c8f+3/+//ff+3vv/X341198+S9++/f9e//e1/+ff/e+S22++2++35/+m11///d///2X//3e///d8fff583f7//fXp2+ffr3vv4f+398f821/78+/3S7e++/8/+///b/+87Wf+/+ffffd+d3/63d2/s12S0c9423//fffX/X8ffb8//9ffv/m//f29s13a1//++0/X////3X///1++/3f/a1/3S6fS7fff++/fffS+ffS5fS6b///++Xfff831/++2++f/+l//143ff2X/ff2ff883/v238+/0/+07p//S533a5//ffffv//e//f4/a2f/m+3S6fX+S0X9S5a16/fff++/ffd6ee2341p++/+/vvf+/91/+l0++X//0vf/X/+32223+/S753f2fvv3X412353++/f5/a8/9/++/f9++/f9p4ff0v0++/8ff0///2///e1fff0v3e/+2+//d6S5d+/++s//+f4//eX///+d2+S314ffxXvvv920m32616a2++/s9vX//m801++/s1+fX0++a73e++/s///43vv1/+m++/f4a3e++/ffS2S9f5///e++fff52/X29e1///2a1///9//v1f+18/S08fffS1////b1///2///r++3X5f9/S010++/ffvvf37p63d1S7m2///4//22/33u01v33fvvS097++/++/u8fXffS21/3d+74////2++2+//S1/7/9vvvvp9S9f/s14++/b/+5332f1fff1/+///5/v///0f31a4+d9pfffX//021980a37+lS7d/+1e/18f//e120158/S/514fffS+//3S99S8f/33vvf563S63++/u9///4ff//31ffu2/+fS94/f//ff43/8ffm855+/a+f34a++/fff++/8/u++e94a+fffS6d5+ffd4fff33///fffy2yS8e94a3X0XbXv/c++/d/+fff3///u+//v///e+d9+3X/ffpS02S3//X/2//1a+a+/4a/f523++ffff//p///b5///ffd2d//e93X+S6a2f///3////S5372S56+e/f4f/9S3S+a318ff5//S//7X5f/a7v/ff9d+/pff1vf///5f53/pff6S1fS1/ff//Xf0/e9ffvvfS2S55S/m///9e++S4a/+f1ff341/+fff/ff//b+/p///e+//983a/v//vX008/p8313S7S2m25X/dff430/+9422/3/e+/+s3/++13++n22f8///S7+/0ff511f/+f4f++3/+ffff93e/ff4a3X3sff5//01f/r22//S//7/r3a63f1/+9+ffd9///32ffp/e9f3++ffvv//1/+s/+f82/vv+6+/ff++9u0S++/p/a08/+1vf///f9037ffpff2f5LpS3++/U++/vff522f/a1++X++/S//a1ff1482//fffX/vX74ffS2S/m21S8/f/2S1/v7d///eS2fX/6ff5/121X37pS13fX/f4825d1++/ff//ff2/+3p9vv82///0f2a713W3p6a/+023/ff9fff0/e++/vv3++a///S+f23fff0eXf/e9/+373///S4//9//f+ffvvvv+/5/fvvff13///f122e++/73/+f4ff0Xff+/v98f//f/2/9/3/vvpff0/X5///d//1s//6fS3r11++/s///e///v2///9a+b7d0vf///e++/U11S5/X53s++/fff4+5ffX8fffu+m3///v1//e/e++eS5f0v1///982a/1/p20S+//+++30++353m++523+++/2++/S7v1438/e0/+ff0++/8ffXf/ff6293++/0a++/fffS+/0f//f83d/vX/3f82+/3e+/++e///8fff+++/++/9/r//X3f++s//a/+2//X190013f9f/74f/6ff18e+++l0/+f3eX/+m++1+f/+d3a01ff6X/e220++/fff23eS32S+ff//+X28/ff/7X4ff+a/pffs//0vf163f910vfff//Xp2a/+Xff31f2S797Xffvv9///e13f9fff//ff3///a13///3fffv//d//e2023S/c/d/3///s//d6e3//ffpX6161X/0vf0S4bS5S/U+ffd2f/S/ff7ff++/v2ff030v525++/pffS///b///6X1110ffvffb83/a61///019m/0ff/f1fff7/+c++/S7v+14++/2+c8///uXffvv9++6/f37v7//v3/+/e/e//9//p///++/3/S5S10+/S82/+6e3S0///fff+e++/Xfff9S7fS201/+U/e2ff+e14fvv4ffvX31/+ff///X9e+/8+3S5bvv+c12/+ff/+e+v+//f3e1/e+/S///9//fffu5///pXp/S6fU111a///7///7//981e1++l++/+v//3////fff33//d7f++u++/ff/+c238+/0/+07vv/S4b3W13++/a0fff/+13e++/X89326e+6/a//S913d3+/4//p23//ff/11vS+/fff883/v2ff+//f51+ff3/U/fff1fff103v//ffd39fff8ff///++/ff822a+04/d8f//7/+52a3//v7+l3+1v/f19///fffS++/3fff0+fffU+//+XffXff//a5f7/3/+/s18/fS///3a+//vfff5f52/XfS+3ff7/d3f7f1fff8/fffu3///ff0+19+6+0S6b/e+lff4a8f//fff++/f///13////32/73v+3p9vvvfX//5e20/b3m2/S8a1fff5/fff++/fff8/vvv+m/f8/+/1X74ffS2yS0++/U+/+1X/f32S2e19s/U13a1//++0/ff0//++/m++34/ff10Xv+//f0//3S9ffb3b/ffffu/d///fff+S/dff0//fff/+Uvf0v9/m/S///p///7Xfff/+3ff539///++fffS8ff969/+/f///v2+ffd//60013X1vf39X9v31p7f37a6++/d/e++/fS4f0v///X/b1//011eS25///u3d3f27p7s3++/ffff//3v/+dfX530ff0S6f+e/13++e/fff0ff/4f2/a1fS1/f/a+/fX8/s1f////S/p82/227a+S3fS1//+0338ff40///b0vf9s///d++/ffff+//f+3d//7/v+/v20/S6e118/+/pS4ff7S8011+/X/5++s339Xvv50vf2//22/fffff/3f//b8++/pXvvS6/e++/30uX///S++/++/U03e1+//uS2++Xff9/+3fX++/ffffvfff/+dfu2/+21f/e+//d3///s1f//fff0ff3/+ffs180a4/S89++/++/X///0v//m/v9/f/f33ffX3e3+a2ff/s1/f7///vvf/80/f//pXff1/ffv4+32//5f/e/m//4f+ffd31s399ff3614//01///p4+//8//4///p/vS3/ffb++/fff8//7++/b9e/+e0vf/a//9///6X7f6+S5S0+//a0ff5m++/9e3/vv1///d/+3f34f+//e2/f+/f/a7XfS6++ff++/5//S5eX/b+/d++/e//d2138a3+342++/2//41+S4e++/b+e///S++/+/pfff/+S0ffu0vvp/a18++/S7f++/s13fff1f//02/m+9++/s8/3f77f+/r9s++/m//23/fvvX/83e/+m4e3ffyfffff/1/X11ff3/d41S8c1f32a76fS/4Xfff7+S6b+///yfffX9//+2ff52f5203+/2///fff7b9ff5f++/m9/3s2++1ff/f+/fff77///e++/b58f8/vff0/1++/3+/ ff3f0//0+S1a5L/fff9/e8321vXp9ff+/fff0ff2/+e+//828fff903e1v///vS5f++/f8/fff7/s+/fff0ff1482//++S3f5f3f+16839++a++/r+/4ffX3m+ffd+/eX0e3S+fS7v7S2ff2eX6S6fS0f94f9b5///0v/d11/ff3++/8ffc94e+m14+//S4b96+fffff90eS68f2f/3d83//s4ff/+ffr///fvv3/+m++/bX421833d7S+ffd4fff3/3f+a+//8+0508/+Xff/+df++/p13X56++/3a6eS0U///S01f2/vS++/fff++/s//3u///fff/50vfffb8//e//ff8+002/m6ff/c+/m0uS07f61++/739a+6f/pS98+/2+d5///3m2//S02X2S2f9//U1/+30///a0+1//S42f//pfff8/v//fff2fS8/11/fffv//S2f354a39v7p///f+/+X+S5ff2///vv9XvX//+m88/3e/V1/+m/3/y4825/25//8//3///e0+/s/4/S6++/v+dfu+/3ff3m+ff/u+//a1X99///0v3f2////ff8+fffv82/ffp///s3/+u3/+p/p///vfffffv3+0338318305ff4ff3X/+a/0ffvvffc2/vS7S3/40a04fffS2++/++8++/X/+2///a/X3ff/+S9+/3e///d9ffff8//S5eX0XffffX++/b//ff/9vf29++/u9Xfff/X/s29++/p82/227a++/89v9S6+/b8/3a6e5S++/v//c3/pff819/s7f7fS/98e//ffS0b//b/e///ffS6b3U5fff/30//ff2f//b1++ffb4S3f4f///ff//ffvX8++S6fvvXfffu///3/u++/S0/fff8/1/+d//fff2a+/s1X/8S++/7504fff136+//v40///4210vf3S/e///vXf/+vfffb75L5/2++/fff9S+/S/eS5/f+/fff++/u/f3fS1fff803/d9179+/f2f/a1++/e/ff++/ff/vvvfffb1fff3++/9d803/ff+/X4/3/p3p/Xfffu2Xfvv4ffvS75/fff++/92+++e2+e+/+e//f/v3///++e8fS/e558f/23f/2X/0//vv4++e3S+b2+X++3ff36ff52///e/p22/+f2++e3ffp+///ff5/fff9pS4ff7S8032+S4b0/f03s3b++e+/5L6/vv+l//8fffvfffvv+dfpX/+a1/m/pX99ff26/02+/S8X///ff2eS5a53e/2026S7//32S7++/S+d7/ffr2+//2ff5//m+/a6e+44fff7/fffff+//0fff20S6S820fff/b/eX///ff52S8283+f/pff0S+e3p2f42f7pff3ff539//p//18S01f3f/+1e/+/fff/ff8///m91/3+2///2+04/f/8/+1X4e0/u/X/+u01X///d0a0f+b121ff++f/3X//+d//ffff9f/+eff+df/34Xp2S6b142//+33/f/U1fff//50vf3e/+84323e++ffd3p6+S9e52b223++/ffffX//80++/fffvv3++/vvff7pfe10/+v+fffvv9//p90a2a//0vf+e++/ff1v13a0/r//2++/S+b6+/a3S5843ffs0//ffu/2f//33//S1/v7022///33fff0vX/+f//3/+p7b/+df2S094/S+/9///S++/ff+f6e+++f+//S//X///f+fS3fS43p7+0S9a/+6///++/8610sS8/7/77//a0fff+p2/ffb4a6Xf/0vf++022S6+///fvv0vfff4ffy26ee7017/fffvv///++23/+eX/+df4S34/5+/4/f//1S8c1ff9203s06f///v/+vS29f8f638/p/S4f7///ff++/f++/6a0+S9a++/+/+pS371f/U+ffdX43S+e/ff4a3fffS2f+/20n/+m++/vX32f5LpS868++142/5/9e3S7d/+1ffsff1/a+/8fff0vf///vS/p///1/+d800a0fffu5Xp7f/e++/f9f8+X81++X++/S//ff432++l6S33157/2fff///e+fS0///X++/f1e31/+4S+4fff7f++/8++m6/eS6e118/eS1e14//fff1///ffffd3++/2f/+6/e+/u3p4+d9p32f801vS3a5//ffffv//s/++/Xfff8m++1X530vf//7S09//eS4b++/v/X22+++ffp1///+S/vv2//3fX0//+X1/ffS58+03ffvX7X3X9vX2S8f8m9+ffw4/0//952++/u28++/s9pfff95L/X03++/S/fff0/3/S1614+/+/a30+e+X33/21/S3d8++/2///ffm+/b+a///4a3++ff2/pX//e/fffuS2f7s+a3//021ff7e++ff7S352///fffX//3m/73fffvvv+/S58++/ffvv30a++/d343S/++/S6ff3+/f3ffX3e3+S020X///v/6//d///fffS9p0f9S6f4///d++/U00v///S101+lS4ff1///++uS6S/33/X71/+///b/e++/d7f6ee0/+fffvv8S163e9f9p3p5f532/Xvff///3v1//8/8++/fff81ffS0v0f61v830vf///vv3//m92++/b23f8//ff18S/3b9b4f9996//ff2/++/S09ff/X8a+/fffS8///+++S2fffyff3///e++/++/3++S/S20v2f/e19a3/e/bX7e20//ff//X9f9/fvv101vS65//2++S6a/+52fff8225501S13ffp0+f9X/U/+1//b//p1+S121S6ff503v1/+///8a11Xf373/7f/vvp/ff0X3f2+dfS5a//b2f//v3ffvS3c++ff9X4f2ffvv/++/ffff903fS6/+f303f9ff2//s/01//S///+/3uXvv++X0X0ff36XpS5s/ff0a6f2fff1/v2ff/vX31/+f0X9a1/f1/e///+Xf///f4+/2/+S+7a2X8/7/+d+031S63//dfa16f/9ff7/fffX7xX/S/e1/+ffff5/fff78ff0fff5L+/ffs/v0f0vf///1/+fff5++/ffff7S///8ffS2++/2/++/ffd++/83ff//a2343a2ff++/vX/3f5/e3ff43/+S4a3s17p/f3++0/S8ff7p3S9m//S//pXvS+a/+31a1++/41/410/68/X4fS3r2/f++/ff/9f3b/s1405eX901//9e///3S4fff//e1++//sS1//3vv//a3/++/0vX0f/++/334ffffS3f6e/3++e3v//4f++pXff3m/S2fff///v/+m0+fff3/a6a0X/+c1+S10S3/+S8e8++/ff2ff++/p22/+fff++/33fff82f++/ffXf3/ffffb2fffX/+ff++ffr2S/s83vffp///6X/e211b///f//e///f3vvb3/30++/s30+/0v5/s23f/+n++dfS6c+ffS1821+/fffS8fff1/+a6///6/++/f//v1///e1e/+3/m/+22/fffff2f2ff/8f9+/S2Xf0/ff22///XvX/30/ffpff7//3a0+//3/429/+ff80+/48++v//v++/f+022X/vS4c/e//e+//21/2e8+//ff3f//++/1Xff++/0176/+3vvXff7S5f++/f8//S3e1///ff0ff3/ffffvff/2++/ff8/vvv36/ff0Xf23e++s///0/5e/+d3/+22e/vv3ff3vvfff2f1++ffff1/13++/9ff539///ffffm96ee5//ff1/+f/+X10v5m337/X+/v/1///c1ff93X+/X2X710+S19++a///S43X9023X4ff//a21ff7//d33++/f8X//d910vfX/+m+3+//3fff/+fff09f/X00/f/33fff//5///3//b/S5S12X///X1S+/013+fX9//9///92S/292ff++/f+b/98+0///d/+1/7/8/f0vf3p4+/ffb///9e0ff539097//9f/++///3///2S+/ff4/ff822a101f3//3a1++/ffd//S9+/U2///ffv8a/S+S7s///82a8/7//+/d8ffS1614+/+/a3/m+9///432ff2/uS54//bX89++/m++f2+//f4//Xff50vf2//99/0++f2/+d//053p5+n410/b1p5f+fff/S733+++0/+f3e9///e1f2ff533//X8///e113Xb+//p/f+S614eX/3//8f///a8ffX3vv/s33++/+///e///863/S89/7S9e/5f/U/e+f/S++/p82///v5+37S0//X///ffd323f//ff37/9///fS3e54++/4//X24+//X/p///302/X0/b13a+fff03/+v//S31+s/ff08///ffffd/m/21/ffff4a1ff++3X+/s1ff33++/f5/ff//d0/2539//ffeX40Xffff2/7p2f42X/++///b+v3/f/f0ff/4f++/fS17p5e3/eX///S/ffd///s1/vvXv22+f983a/ff//ffv8a/++/S+eX1f//fS0X//3532f/3+ffe/a1/b9vv036e/+eff+/Xm/f531+/2/+f53//u2f9/3f3m+f0///vfff+/r3/+S4f33m2f/31+dfS+dfp///v4/+m/vv3//f22+fffm+p6b//1/195/++/53+S1a+/ff81816+ffS+S7e/eS6S2e3pX/f/3342ff1vf/s1++/r23fff9X/ffrXff++/X++/ff5/X1///2++/v///4XfS/m+//m+2///pff3d10/+v+fffvv9//3f425f17a0a16/82+f+/f61S+ff+/++/S8f//v2S3a8ff25/f8fff/eX//2ff++/m+3415+a6ff/d/+ffffy++e0f7S+/fffff//ffff5f53/S7e2+2++/0S3X/f933/b22+X8///97f371a33/830v///s/X2///5/X+/eXffvvffb0f///3m//a1X1f++3S9f0///2S4f3S//X/v943X5///9ff1/+d1X2353m++/1/+s1f2/X+S4b++/ff/+S4a/53f/+0910vfX/+X3b9vv+X5/S01eS1b93fffm//e/m0/+f0//ff0/+d/fff1/dfp8ffd3S/s3//m/+l0///+l///0vX/0f3++/p/+f++/ffffS8f/33/++/9/+c221a8fX+f/s/ff//33e3a/f9/X335fffu6+//5eS4f25X/dffX2X8//ffff+S30+/0a273X23f9//s9++/S7///03f36ffXfS4a/++/ffvv2///s/12ff/ff501f2X0XvS4f0v//vvb0a3+/ffvvfff1ff531vf0f1++f/+///S9ffffX+//df+/s1/e1vf//S6e016ee3/+S++/Xv+9/++/Xm+ff+/r///S4/7///e+X9ff/S9f+X1///S+e///94+/X/ffvv03fff++421/a0d1p35//119v4//2fvvS5ff18f/ffs3e+342++/ff9m//a37+38++dfxS9431/p4e++/ffffb1f+2++/df5//b3+b1//f0//S++/++m++/m+2XvX//+S6aX+5/9/1S+X3//v/d/ff29f9e++/f83f/+0vf///1/+fff583f7//fXp10X3p/e/8/f0//8f++/3a13f+/eS5ffffs2342337+2/S33fS+5L52ff0/vvv1e3fX/X0++21ff5//11/2f66ff31a+/8/++e+/S1/eX2///ffs0/++d1pX/+Xf/ffv3+/01/X5a6e//+/fS+/e3/f01+eX63fS3f2S797Xffffffv8a2Xff/p//p2a+ffd99/++/fvvp2fe2f0vf0///fff222ff+0m3ff//3u33f861e+++a//S++/vX0f/2X//ff/+Xvv/+d//S0+/934149/b2ff0//7p8/ff6e36d+ffe++/ ffS36+df++/S+/s//033e//0X+/p9S30vf///+/e++/ffff5/f39vvX1/S/fffS/S20++ffd21323X3+/253e20eS0X///vS8f/3S+//++/8/ffd14f///2++/ffvv2fff6Xff++/8f3//0vvv1f///p92///18305ff4ff+e0/s3dfff0Xp26ef/1XfffffS5X0Xf9/+///S383d+34/f2ffvv/3vX9p3f/s3///f8016f4Xm351//fff/3X9v83a216S+5ffs1m983a/S/aX/a+/+m+/S533a5/3/1s1vfff125//1//eX40ff11a2f60//3s3b++X//0vf/a///e23X9/X8+ffs1e1//4ff0v0ff28/f0/++/+ff/39/5++/S6e2S/++/3fvvp3e///9e03d3ffS2m3433X383S+b/+m///f0/fffuS2f2/+c12/a16ee514ffffffff203Xv18f/f38ff1s23ff5e0X/6S3d3/vvf9e0++/b+e///p3/e0/f8f9e/s/6f///fff29/3fS5///b101323f//ffb8616/b7///7S1++/a3ffd6f7///b2//1//8///ffv///p/3////6X9s1f/S2m25X/dff4a/fX828++/fffS8b4S8a/342116e0X9vf2/fff33a3ffff++/e//d3///3S937W420S/f36d33X2/1239S12ff9u3e9fff//X/f//m3/d/+l3++/80++f8/vv7/9S//+/8X014ff//S7++/bS1+//ffff7/m2fff9S/fff0f/+sff+S7/ffffXff//8++/ ff++ff9X4fff11f92+f033Xff33b//3//fffb19v//X/e+8++/3a137eS++/f0+/7//6//9///422X8//+d2+S3ff0132+//f//S135/vvX5ff++/e++/3vff5f/+e///5/b/1X1/22/a++/60+S0/fff//f4S3y//ffffv1e3fX/X03a11S3b0//dfa12e++/ff++/ffvvS5/a8/f531S0e0v1/fff23f5e+/S+dfp///v4/+ffu33/f1S4S+/S4f2ffv5S96/+e3b83/e1430030/vv2/f8+++f/Xff2e1f2ff533//f///p86X03/+l3b/Ufvv7/+s932Xp3eS8b5p2+a0vf1+/a++/s9//9p1X+/dfvv9ffS95//4f///d++/0vfff50436/ffff3b1X/2S3f4f/9S3e+f4ffs1f+f/1///e+Xff522/fffffm3e2e/s3/+f9/m3b/Xf2++/82a+X0e620/b1vff81/0///0vX+f6S4Ue93S+ffd2eS5d++/fffXm+ff+/r/8fff1X902b78/d/4S06eS5S86///7f/fvvpff8a+/014ff//S9f0///f//4a+01v++/34/d//s323sffr+e+f0fff02517s2514fffS/m1++1X3//dff52eS1e14//fff332++e+//ffff2/f311/f68+a///e///861m/ff0+/86ff+df5ff200d72ffu1Xf+/p13X3/23f/9/5f2++/ff++/vv90X4ff0Xff+/d///s0a1X2++a30ff7d206//u901s+/pS4f/eS7e1/+/vX0X9f9/fvvS+ffXvv5e2//83ff/+f7Wf1fvv0/+/7p25++/a0f/+0f0232//1S6eS0U///S01f+/++/S+//9/+3X/+19m//m+323++/S08X2/f1e++/s1///f7/6ff6f/+///6a6f6//c+m62514a6Xf1X0/1/+X0236/a00X3/25+/s39p8++/mff3s12Xvv9e3a6XfeS8++S40/+3X+e983v6e++/f/e//++a6efS8ff7p3S9S163e9f/a1ffd1vfffuXff10183++/d++/9550/++/ffffXff91//4a3X0XbX/+eff60f22//021437S+S9s/fS2/f+/0Xv/f/f/d914/X1/a781/v8/fXp///e+//S+/b/f//0f4Xvvf3/1S9pX0+df31/+sS3S+a3X/+S03/s00/+d0ff//++u2m/v+S2Xvv/+df6+//3///S+7X1/f89vff533ff80vf3/s06f///3e//58f0S2f+/20n2b/116///2++S9f/+S5ff553a0/vv/b9fffffv9mff/6/1Xf/91X++a///b9432fS378ffX00vf13ff+9/X+ff+/S6ff94/rS8b//8+//3//eS8++/a1++/e+/s0++/ff53X2/S05++fff582f3/ff37p2ffd+/5//42e++/ffff/+5e/+a///X3/2a36/S8b23fff572f//0f9a2X/d50/vv90vW6f995/S434ff/f4f/981///a381vf/+X1Xp0a///813e33/ff90vS6S2eS1++/p2/ff9e0a0//b/+fff6/+9/vS4ff0vfvvvS9ff//20ff14ff9p/ffffS6b7X/233Xvvpff//++d+86X42ffS6f+3+sffX3Xv//4/S/b/d/+ffe3/399/1e3b/1/eS482ffS+b/119a/p83++l1sS8fS03/S+ff/50e2++/ ff0//8f++/e1e3b9pff9Xp1/p4e+9/73e++/s///e7//ffvS4b260///ffff1sX53X+ffm+83f//b+2/fffS9527f3s35S10+/S8++/d++/f4+/dff/+fff/1fS/ffs3f/++/ ff0f/f852//655///ff0+l23++/vfffv/a6//p6a0fff7/fffff+//0fff332S6e1S6++e0X7///b83+++1//p/3+/ffd1//4fffX0/1/+s/ff4X+fffffv7/p1/S13++/ffffa8f25/v0a210ff+/1483vvvffff02ffp+e3f//d/ff//S+m///++Xf2//r+/f342ff1vS+b4+/2/fff6fS7+//p+/S6S3X9s/+vX7Xff//b3ff+3p9vvv/d///++/rS+m3f20S3d3/S9//b7fS8e+//77/p/S4f70a++/fffv01e/+8419p2X///d114ff3/S7e+e25fff+//S8///S17/X///0Xvfff/y///S6b03/+X9+/v058+/f999S0+/Xf3vv3e08f0/fff+e/+1a/+fff219e/f7S0///X9X/fff38/5X/vfffS1498a/9//Xff2/+ffv+//7y//a1f33fS0d9v0S2++/7+/fff//b+ffd6e0vf/vX31/+ffXfff999+/ff0m2f2+/S++/7S/9/ff9eS1X2++/ff/+0f1//fffX0X+a9ff3vX1///XffS/v///b101X1/sfff98/ffd73//S9f8//a283v++3//m93++/8S36f9ffu8/b/// ff53/++vv//26S13d96923X2/+a8/8e11/e//ffp/e9+/s/+f0vf03b2f2//5e++/1ffX/13++/9ff534/2++/2++/vS6/fff//df/p2a+S6S++/S81/r//X+/m1f/2///d7ff3s2X/S2//vS9++/0f+p///a2f021fffu10S932+/8/f/p///3/3e9508/S+/df//3f30//1//e++/f4///5e3f5m3n+/v//+//7p7X1X/vv483ff1vf///1ff+/fff5S0/++/XffS0+//b/6d4X++9//b0e++/fffvv/vfffXv9s13//dfX/e/ffffa4X7ff+df/sfffS7fffvvvfff13S0U+Xm0e2/f+/v52aX1S833/2++/df0vf39++X5/f///v+/fX+ff59p//ffS2Xn/e//4++S1//5a1ff7Xf/+s+//a3+/ffff33e+//8a6//+a8ff25/f8fS4ff///v/+ff2f10XfS+/e0/+s/+df3S1//1S3a0///d++/a0ff52/f1// ffv/fff321++/ff2/eXp8//vX8fX//302Xm4812323f/+1///8a6e/ffffS42ffXf+3Xf/+ffvX/vvX///p/+b8/0fff3v//9ffp205+22f/+a2ff/+2+++//32//41///ffd35//3v2f703X7++/vXf8ffs1X3+/p3f/+20///vvf/42e++/X4e0/u+fffX4//v++16++/f8323/1++n+/1++c//vvf++/b/+e0ff/+3d48+m1S8X13/f/+e291/+lS/+/pfffff5//m+f77d3S2S/+///4eXff5fS7++/3///S/98++1++/m/9/uX//2f7v2++u2Xff/pffp3+fff5e/+3ffff2aXpXv4+f530S4ff+dfS1fff54f15S3S2f/+a/uXf30+/2ff0/+m25S1/+9/X1S/fffvffff7/m2fffu3XfffX//c3f25ff/+a40fff18//s0f3S9d/+eX1vvXm901/fff8fffS80f/+ff/+a++/Xv03ff/+f1/b///b5S3e+a++/fffvvvvv/S+3Xffffvv0vf1/fffS7X++a4++/dff///S59//7a8/ffr1S539//u//3pX36//++ff/r++/7vv///u/0++f276fffu22131/0v1///93ffvX7X32vXvS+/r/98a++/21e+//ffx3eXff/+l/12S43z29Xvv1+S13++/f2fS++/ffff//6ee/8023e//ffXp7++/81e/+S+/vv8f10fff5225d31a3fff+/p4+d9p32f32ffS/s3//v+///ff3fff++y0ff9//fS/02ff/+2m//3e+//f/dff6+/p27/sS/d6/+/mS1vffS9f/9//9f+l4//8+28X5ff+/fvv23/+n///a42/60+13b/2++/fffX21++11XbW0vf+6eX6e91m2++/fffm3fvv0a/+b29++/3///+X32/vv/3f/1f8ff/++e/ ff6f9e23/9f/+sfff1fff+lS2b2f6+X/+e/+/4++m5e0vf3ff+Xf7b4f++/u/0/s06f36S7dff//fff++/S///X/6ef2a++/S//2S4X9vf9//3ff4f++/e+//e/d++a/1f3//fffy+/7S22+//Xf3v9ffff2+/p0/++S7v2++S8ff8a1ffff34+//a4+//0ff1///dfp63b/1/eS4a3s17p/+e+/9e+/p//1v59///b///+ff/0ff/fvv1///dfu/+S343X2/+e+Xfff5a///a2/m+9///s//a2++//99S6ff51e+m/32//S/53S2Xm3a+fff+//11/S7/S/s23f//9S/3/4/2+//Xvv/f++/98/vvv/b43fff/+d7/ffr2S/s83a4ff8Xff7/e9/+d/b///++9pfff883/vS6b783dff42++/X/X8ff/0vf//s//m9d+ff//bX5ffp+9///5Xfvv6e1f0vf1///e/ff/3aXpff6f73/e00f9vf+e+ffm2+f6X9/ffd2fff3ff/++/ ff/ff//51f++/7/6e++/S8a5e8Xff+ffd/e211///fff+/58/01fS1/90ff+//d322/e1e12++dfX/Xffv9ff/+m28///+fff6/vfffS0vf223fffS/Xvvv2fff2X13/d///9s1+eX63f/+u3420ff4233XvvpS01///03d/vX/3f2832S16ee3/X/r3e/++/S2ff342f+Xff7/3a23++2+S0/b2f6fff361/f//ff//a8//0++6+X2S+b/fff+/9/3/df/1f/2X/S+/d7eS++/f0e6S//9//1ff///9Xff///+S7d039mS1e21/+f2S02++/52f+ffd7eS+/s/e+/S+//+d1pX36//++//X4S0/f3X///vvX33b0ff/m0uS0/S51f/fX8f///b4+//9/++132d/+f//pff35//9//f++e9f1X9fff361+/++/S1S++/ffd6S3f///3e//021/fff81eS23/9f43S4b4+/Xf7a1fS143p83S79///a1///vv798fX6//+23X7f///ffX+a///v//a+a0ff4/+f1///116ee7S01712fff8f///fff0+/0vf+/v/7m76X/++/fvv3p6+S9e53fff//m+X/ff///f9Xff5/S+a/+31f0e210S+42//4fff//Xf40+/21b369++0S/ff0f//fvvv2fff/s++/fffvv++/9S/s8/7S6/e+X9550/S++/f6ff/ffX/fff523S++eff3++/fX6//d17/b9/++f0vfS26eeeS5/S8/s8/ffS93e/ffff39/fX//91v2///m82e//1/vvS1e+eff/53X5/6e+0a/5S10///d39v/a6//p6e0f+X/9vf//2ffp3fff35ff///vv/+/++/fff63+//fff0ff/481m/ff39S833/201fff++/fff2+//d1e021/X/s29++/ffff/s/3///b++b///e+//ff31135///f8f/++/b9++/2+++0/f52m338a0f9116/+df393eX2f43///fff18/613e3/fff4S2f2X82//9615eXvv+2ffS++/5a109a/vv///9m+ ff18//m++/0S3X/vff//e04///51/dfb7p39e/Uf+81a17+df/+ff/5L413/f/+S/m217430fff3///3S98f0///3vv/f412ffS0v0f612S6Xff31fvvvvfff0Xf8+/3/a3vvp36+X0XvS/f7//2S/r05L0/f91S/vv0a4/0/++/b+X/vvff3++/51///++///b4/S7a+532a6f8+//ffff50S2++/7S0Xffvv183d3ff3+fff//1S8ff83S4X3///p3X3ff+/0S22a/S07fffS6///31fff2e+/c1/9ff3/S2/+fffy+ffS7/f//281/v//p3///0v3f3f++/5ffff3e//655+/ffv+///e///e+/9vff++/fff///fffv069e22S2e106fff/52/a2S3//8ffS7v7S0b4/e++/5fff20Xff42S7f//S++/v8++/d7f1eS4+/f8/1++/8++/ff5//p//1839/+2318++/S73X/35ffffvv1S/d/v///ff2/S70vf5X63ffyS/e+d+df2m334f54///vvfffv8++/b/5+/+ff++/7++2+//v03/34f9a56/ffff///a32m1m98f121X3743f4ffyS0+/3d/42S3a31fffvv004+S0/S8++/X8//s/Xf/+ffvv//+1///m//3Xfff+//9vv//s053X30 vf023S/0S23f/9f32/+f1///11132+/p12+++f1///++/0/+s///4++/0vf/+m//a37e++/S3fvvp3v831fffvvvvvv+8+/+vS5bXff58f/+e/Xf/21++f++/8///2//8Xpffm0//0eS8/11/X3ff9/// ff1///+df882a+m3/X3ff/1e/s811a0ffff58/S8a/ff4/f22++/8+//r8a+/S01///e03/S6a5ffS639e/1/61S4+/ffd70e6/+3ff0 vfX23/3/S4ff/vv//83sX/e391S7423S08X2///X/a72+fS+9+/X412+//90S8S03//++ff+d6fff/u/+m///S8830++/5L5fff2S6X0vfX9m1/f5/m/+3d1f0///s///ffy+v322y++e0X7///XffS+bXbfffv90vf0a23ffd8//f3s++/S6ff13/+f22ff3v//+S54//b40/e33d/0vf9vf7/b825ff5e0XffvX/0vfff8//fff/+Uvf/p///dfXfff/X/5ffm///++ff/fffb3fffvv//s8+++Xv7Xf0v//S4b93b2a/++f1/+3a6ffm++/vfff+/yXpfff2S3e39s11333//3ffu1///d01s32yX39S+/v014//u00v/+S/ff0f6ff9/S7ff1f++ffv83++/03X/Xv2911S5S3703v0vf///+l31vvf18f//b08X///X++/f/vX31/+df///vv9++d///fff//s0e1e/8++S+/sff7///e0f2y++/a0f3d9v///++ff0ff/4fff90v/++S80fX/d//S2+df/+v++ffvv2//1v//7X4243a3eS6e118ff56//S8c1ff8/ffffffS52++/s131+2X0vf14+fX0++m9/S3vvS9f1+fffvvS36ffvv/r+/+//p+e93e2X3S7//vvvS+//u+//+ff++/5326fffS8X/df6//ff00ffX/3vfS3+df6X0+/+dfX33/+9///36fffu2213e2//ffr///+df/b5//S3ff+//d8X52f203/60d70S+3ff5e0S++/ ff1e//4ffv2022fff77ff4ff1vf8ffvX/vvXff//0///eS8S0a+/+df/+S26f1/0m++34/ff2042S62///ff92e++/21e+/90v+fXp4e0X1///ff5+2fffX0//ff7S35ff2//v///S6+f4ffXp7e1///d12328++/3v/s///ff20f+a2/Xff313b//fff/1sS52a32///f5X7p3439e//+d5fff/b1//01b22Xf/S22ff/3d1010vf174f4/S2b/e31/++/df3S9e1/e+/S6ef91f///f//X01e1fff13S0U+0vf/52ffS/s9vff0f51390/b/+fff9323f//df/fvvb0f4/m+a+f/+Xfff/X630vf0+/2m1fvvffX40ffe+/v/uS018a4S8+/s20vf//Xff++/ff8/f3e8f813/S6m//X/X31vf/s00/+d6m+/S2Xff//vvvffs12Xvv9883v6e0vf/vX/302++f+/ff++///vX8++fff8130///++/+/f80a3ff23f38ffb8f+l/ffr/34f//eXffvvff3p5/++ffvfff2+//+/ff9X30vf++/8/fffv81f5ff0ff+eX1f/+d701sX93ff1++df42X3ffbS2ff++u0m2a8e833//fffff0//ffd8X///a13Xb+//ffffu2+/sff03a+/v//e2/v42eS22X/v2+++27/2ff0vfvvX32f//df/+f/vv/+f5//vX+/180b+f8///ffffX/X8a/fff0a+6+ffrX//ffffp2/+S4f33b1e/3021/e++/2m++/f800///e93X7S0V1fff3fff7f/S9X1v37r//f9vv92ffm2f///03//v39e0///X3///fff8220+//8/p/S25s///vX//02S6f/+df01sX//f1S+7X+/6X/ffv003S++/8///e214fS5S43++/ffff8/+e9f90fX++/f3e3/d++/3ff/b09eXffvvv//9//5f/e/S9//9e023//a3///9dfd/+fS2/9+ffd/vXff/+ffff2++/++/3s+/1vf92f39003s06S3033//ffff/e+++/e1/fffu2vf3373p2a++/e+/ffff///a2//fff7S1/7/S+f+e+/S8fffff+d/a0++/ffs01///f//0vf++/9/++d9//vS87e//+U2b3z/ff7S239e0S6++/fS01+/fff8/fS3p/92Xvfff81/s/ff2y0f80a/++/U+++/Xfff//df/a1s++/f8190++e/++/690/+S3p6Xff417+S+/a4+//e3p/s3/+f9/3f3vvv/+e///8f//1++d3++/pXvvS66a0e++/f2/fffb1a21/ff8X0213Xf/dfx3ffs1e1ffS+a/S+/f//32/ff//99Xv33/b22++/12//eS043/+d/ffffS23/0++/ffdffS4S1+ffv6ffs1ff4S9d435252++/4/d/X/f58Xf0//ffffvv93S+ffS32ff///m/v++/s1+f1// ffv/6/+3ff0vf402/p//9++m+/+fffff+fS3fS0eS+/9//6f1X58/ff2y+eX97X8++/e0e290fX0X3///++///90v03fffff1ff8/+ff8a/S+b/+m///p9/fff41f/+v33S5fff6e++/ff3239e0/3fff0vW/b220ffyS8S0a/3///1531e0f3/2S33/e1/+fX15+a6ee98eX93b2S8//d7X++/m8X81vWfS3fff++/fffS2++eS633///X92/S7a016f40vS1y/fffwff/vv2+++f//b1++ffS51S3fffff//0f0ff8++/ffd/m0X/S0e+++X0ffy1m3//a+2++s+/s+S+/a09S5b8fX2S0V2//f93///S8376ee0S+3fff1/3vv/fffS+ffS3f2S6S5S/0e3fX/X0++ ffS3f6e/3++X5/S010++/s22ffm2++ff7219fS9fffS++/U2+a+/b0S0yS+ff5ffx3++/f+/vvX9/+ff//99pS8f89fffu12//+m+++mS8f++/Xfff42f6++a1ffy++/a2/vS7e++/832S1/+d0+/f///+3++/d21++/e+/s0/X3X529v+//s39e//b9e8a0026f3m2X2S/1f9r9///2/fff//ff6ff3/f3++/3X/S7a9f8fX30f9fff0X3++/6m283vv9fffvS0vf/S/ff7p81S9S4032S0S/34fffvvvvvv//8//+v415/++2+0bX03f7X/+/94+//m83vv7++S2//d7S6e5X5f///3a/73ff3a19++/X+/++13b28fvvp425fffX+/S9/1/+3xS4a4/+fff//3+/Xf1//012m10vv+/f4f3ffvv/+a+/X8a10fffS5X/7X+/+fff+//ffe+//+m1a2b0/e0vS1dfff98//1Xf9v/fff/b2S38X9a6/0ff93f1Xfff+fff3/8ffS4ff10++/7f4++/++d22mffr8Xffm3Xvvf0/S4e2fS+//v/33224S+1S73f//fff///X8ff25/f8fS4ff/a232f0++/01e23f///51/+a+ff53ff3vv8f02f//u++/82/2++/S776ee4//Xff4fS20v2///rX/e2eX5//9/7f94/v2381e++s18S3/ffd+41160///203//e03///vvff634ff862ffd6++c8X7eXff2/f4++/m/+b811XbW035ffS+ff/p9//9a5/+X/d0S4a//r70v43S9e+S7b0v4ff+9/X///f/b4f9a5S040a8++/ff8fff42++/e//v8ff20e6fU++/ffd69ff1ff//U/a+f+0v1//ffff0fff4f+//r+/S2ffS3/2/v96/v+/3S+a3X/+X+23e0vv2/X/631/p4+++22+ff/s4fS9S+f35L/+12/3/df//3e90ff/4fff90f+fffu3//fffS8ff/+93/uX++/b830vf91fff9ffS2/+ffv21v238//c2+fffb/+S6S6bf1fffvvvv94++/e+//d8fffv+d256///7a303sS8fffb///+9vf01f4/++/b/+ff+84f0vf52//s2+/d94Xf1e/f3x3zfe+d4/d/+9/+m3fXpff7X/dfd/0/ ffS0U++/f+/S0m2///S6fe/S7m/e1//+l//vff41ff51e8/1++/8ffv52d3/a/e+++m22///83e20d207//d1fS1/ffd9a19ffff3S4/7a82S9a1/+fff/+e/s81/vv4+fS1///74S4/S+2e3f+m++/53/v4ff8a8ff85S63v//d3330vvX/ffd4+++vfff0ffff/f+/f5m+/+/S2a0m21S0e04/+df3/3vfff/+d/eS/s9vX//vfff///fffff7e/e+//++ffS910vfX3y598a6/S963X383/vv//s0e1+c8/f03b//ffff7/f/+s/f233/d12Xff60ffy1m/e+d4+/f600f6ff9f/+/vff/+eff310f8a810620f321Xm48123S6++S4b+ff6eeffX0vf14ffp838S+34/ffX8/p0f93++/S18++/b625//0vfXf9X++0m3a2m29f8f74+/u11///ff50++/++f8X/+3ffX33Xff33b31S5///9v2/a7//+l/+m///p9S23ffS2m4X+/3f+c3ffff++/f5X/+m+/b+/vvff9303d/1S6ee8Xy+//m++d///f//6eX6S3f///3m///fvv5/m82/vvX71f/++/+l///0/5//9vX9a3X/+ffb///df/2/+++c8/e+/v/+4S1/+80XvvfXv53ff8/U1/+a1029/ffff/ffd/4//p3f/+20e0d6/+ffffu20++/8ff0vvS+/m/3/ffxX91ffy1+4ff521++fff/+//ffffs1/0VFd1///a38m4fffk33++0m38ffe++/ffff/+m+/b+//+p1//ff++/9+3d3Xfvvf4//v43Xf23d/+fff1fff+ffS8S+/X8fff83/+d0/f200X///yff18//sffvvf962+/d8fff+/vvv8+/vv0S3f8fffff/+S29ffvv8fS1ffd3/Xff5f///s/m++3m++/ff340S7m34f/fffyS8fffv6ffpff3///8fff80a8+a2/Xff313e9/S41+1++/dff/ff1ffS+3f4ffy1m3///ffX988a8XpS8e2e/d34+//r/v9/+S2///83vv++/3v3f0f4a8fffS80f8/fff511X83m/+fff86a8+//m00a/33//f//v3180///ff//s3++df8//8S1e+S3e+++e/fffvvfffS2///ff9e93ff+fff2e2+/ffp11ff+/9a3ffffvvv9037S2n6X0ffS++/v83++m9ff10 vf3S5///fffw20vf5L0a/ffS994ffpX/1/+43fffX++22/X921++/ff1910uS7b2S9///b/fff3f+ff++/fff++/v3e0/3d/23e++Xp/u//7412f8a1//3e3X3m0ffx1++/ff4f/+sff1f43a4//X2S8b10v51e60f/f833/2++/ ff81///d0Xv3p25+/0vvp///a7///X4/m0ff18+1/7//f+ff0//e+//9e/s/X0/+df3/+S/s0m+980/f///ffffff880v///vvffvv1vff0vf//7X0S++/fff1f1/+fff/e++/663539f/2//ffs05ffvv37/X8+fff++/s1a19614f2/73df9/fff779f3+/eS3f22+S+/s//0vf1//s////fff+2+// ff9vvf29+++0ff/S/9+S5ffm+/e/S6fe+f/+1ffffpW///S34//b30++/e1S4ffff6e1f0e21f2fffS14f//9S70v//0vf9/+fffff52+3m+ffffd83391X3310u3ff1//f0v0vf0///fff222ff+e0/s4fS3r+/X//dfXf///1830ff4f4/+effffffXffvv5ffffff1S5d1ffe1d1ffvv/p/ff39e1ff133ffd60vv/0vv///2f534143a3m8a/3S3S8X/f60X2a21v64S/S7mS2201m/bX52///4/f++/97f22//0f2/ ff6+effS/d2X360++/vvf+/6X00Xfff5vff0vv03/+3d/+f///ffvX5f//3/f3Xfffff5553eS4a3s10eX+/S525+//8fffy3/+fff151a6Xff31Xfffff3b/e+/8eX901a8/++f1/ff239vv3///vvvvf/+df/vv++/ffff/+eff4f3162++d943a++/fvvv2f01Xv8//f9ff2//6f3a38ff++/ff85L5a4fS7/+m/6+/m86a0S9423X7f///ffd///3+X4f2e+/S0/+/ffr//9S/3vX/+41vf03Xp6+3W+/7X//fffX3vv2ff++/m/+ffv//3b5//++fffb/f//df3fff9//+m++/3v2d/f///vS5f/fff/df++dfXffS3v7S++/s05S4f//df/Xfff302/+8/s+/ffff5730+++fS3b3/+3/u++/fffvvvvv/2ff/+///ff8/+ffe///10Xf//d20f//++S72S/82270++/3vvvv2ff2f2d++/fff/12S6e118/+/v///df8S/S1v8S98fff/f0/+s11/+d8/fffvv2/3fff9s113X296m0/f1fff2+/m+/df1vv/ffv/+2+/dfvv3d///v8X13/d///399120ffpWvffX63d//a3f//d///a38/ffu2+30X3///d//+v//f4fvv11S3++/df///uS1+f++/4ffvvvv8/+00e23vvvf/+2///X1ff//e/+S5S109ffpffe3b/ffffff0Xffffff//v///ffd7X9++/fff/b1++df// ff3393vS4ff0vfvvv2ff03/m217/b++/4S++/f0e0//pXffffv18///fff8a3f8+X138/98S4+ffwfff36++6///a8ffvv5ffS/f12e+//fX5ffu0+/++a/a380/vvf6S118f02///v3ffpS5///d1+3u++/ffd4000///a0vf23e/3/dff++/1v+/43a0vf+df4/fff33a/ ffvS8S4+/01s29Xff9Xp1f36S8X9X101vffvX//75S3X/+df2///++X4/ffs///v1///0/fffX833a6/c1//c117//ffS/fXff//6S60/+df213v8//213pX0S30//v3vv/+e//s/9ffr/91//0Xf/X/+X4a822a/++/pW930e3f///s0+/b7d0vfS0Xv3//+880/+f236fe03S6ff80X+1++/v3ff/fff/fffy1m3+mX7++/ffS98X4S8a/+S7+/ffffa3fff+d52f36//a480a/+///ffff/+8S3+f5LpS3fff6ff6///++ffvX/0v8X9S/+1vf++/a40X30S8++m37++/d8X++/vv8/ffs023+//ffm8fS0a/+8ff511f/+ff9S0v+b9ffm2/a56ff/a33116/+a3S1/f3193++a3+X/U32/+S5///123e++//fff9fff//e1++f10vf//2vf/+S0X/a0a16///fff2X/fXvvvXffS+b/f/ffm+5a822fff///f9///110s1/+S4b533f81e3S8/fff5L++/S41S4114++/S0f319f0vf/e++ffr1S8fS1//31Xv+21vvv/s250/22/+ffs//++9f//d13S/c/3d3d/3e0f9S6S4+/S235/+ff+/b//vv21ff3d93///22//fff/+a/0Xvv1+/b4f/74fS7ff5f583f7//139//+fff70e6/+f1/b///b3fS++/e+//83d2//ffe/2fvv20vf6ff3d/e+//83f//++S3b/m+/a0e28/vv8ffX3v/8+/f4/e/e/2++0e/902b++/f/+/ ff2/b7++/9a4/0f+e+//1Xm0S3/32ff9++/vv63v//e0vf/5fX3X8f74+/vvfff/ff5X61X/X++/3f4++s++df10/// ff30/7///+S3/+dfpfffXfffvv/2X16/2eX9X/fff/9Xv//s/n42Xp3fff///f1S4b25ff///df8f0/+ff3f+/3//vv52d0++s8/++/8+6/fff7S4fS7f//Xf//1435252ff6/// ff33// ff7S22+//X/S80///vvp///d/+l//s//a20//pX++/s/ ff1/+X+a2// S4a+///U+0fX11+fvv///ffff0X42f/fff83Xff/sfff14++ ff22a2ff/ff//U+/374ffS2a/e31a100//ff2f//3///Xp3a01ff33df+ffm37X41+fff921S8fS03525f0vf//3W8++/e+// ff/9+/fff//3e/fvvff5f0f0ff8ff1///ffX131e3b/pfffX/eX3///p/+3ffs/f9vS2433W/+e2S3Uf/3/2///3f/ ff6///b420f1a/ff6eeff0S8f7a63X///d782///v53ffvv3f9//s42//S712/f2ffvv58ffd55f3f31+/S823d+e///94///v/+a/+fffXvv10v/80b///f///S3/7eS6+2++/f++/s34//b30ff53/m/+231/+f0X9a1fffvv004+b/X///b101S6///b0// ff753dff33fff/ff/+ffvv/s3vvX/vv0vf23e20e2//1a01fffy5///b103+/s/f0vf+S4b/S5/a403s3b++S8e001X8ffd/+3+/vv/++S83X//S72ff8816f0vf5f/s/X6a8e++/v90X/a0vfS6f18f//b00X+0X1/a781/fff9ffd32/7f1f/+X++4+//333//3e3f//s//s++/10uS7b5L3e//6m2mffs330X/e/vvS0154/425f1S4X7S1+/9eX/42ffpfff///p///S8++/m+X14/fff/f/a+e0/a0/++/m/+effy51a37S6fe+S2Xvv//3/3e+++35ffvS0//2f03f+/df2/vvp3fff11f/++/m++2+/ S2d3X30f252/+f34/a0+/f3p2++/830f3a63f/+ff/+a++/X8//ff/11X0vfvvvv/+S4a30X9/+ffd91///uXff10ffXfS42S33fXffb9f/+ffff/vv12/+a+a4e1++/98X9dfS78//ff0v3/vvf0v/vv93e+++/9sXm20fff100223f6ee//+/vX++/a/f34f24++/f89X+1f2//ffffvvp6+c1s//d/+m/++9///vS82+m93f94/vv//U52//S52163bfff+/s90vfS7+fffb///S2+/S6/fX//fff/fff2m2fff3fffX++/ff6/fffvffff6/a5fS1X0v3fffS9eS8e1f5ff/X3ff91f6+++e+//fff91f3S9d14fvv4fffv7fffffy000fffX82eX802a83+//1/+df6f2++df/3ff//d/ffvv++ffd78ffd64ffvv3vv68a/m0/1a1s+/32Xff/dffm8f//29e++/5/fffffffS6S627d3fff1ff8++/2a3y5S20Xffffy3833ffff++314+//++e++/p28/3eXv//200a0/+f90fffy++/1X3a++/f3e3/fffv+/8X014ff/9vv//vv3S/vvfffv9ffffS6//d0v1d0//f18e++/ffff9fff011116+e3b/+1e/+ffpfff1ffff11ffs8//p35/dfuXf/X/ffvv03ffe8+/f021//fffv14S8S8///vv/p8X33vv/++/ffS08X2/fffu//1/ffvvf/a5a8f2/+1/// S6f//18S013f28f//f0/++ff6Xffff1222+f03/+f1ffff///8ff2f/e1e124f/fff/df6+/9s113X2++a30S/++/m+/ff82++6m1//vfffX///X/v2S/ff383b+s///0/f/3X3m+X/ff/vvvv8a40X3a++/20///mffy3//f/p//pffs3f/++/20f/+6// ff/+ffvv/+/+/a5S1++S0++/ffv/e1fff39//9df9df3S4b8fff/23ffdf9p0fff4a2Xm1/fS41f3dfff8f/S3c+0X/S0S/+effy3e0+//p/dfn8fX//2e//dff9/u++/++effUf/S/++/9230ff4S4ffvvxX3+///203m++/f/+14X/+3S8S4+/01ffdfp//2// ff+S/p//a1//m8a4a4/s017///31/X3ffsS5a40a8++/ff8fff43s02a2/s0a8S6f/sff7/fff9e9000a/+3S8++3s0vf++31ffz5/fffy/fffffff8a011a43a13/+6/p7++/X523v///fff//d//9fS5e+++f/U1fff//U//S2Xfffy++/1vfffvX/+m++/b+//+pX/+d/+eff/a41f/+f20+++0ffpS+6fe2e//7Xff0v0++/91ffv60vfX3//fff8/9X///fffUf/m++6fff3vvfff/+S/v11//5v5a2X4fS3/5v90a18/+3f++/S4//f//vvX002f23b2eS2m1502f+ff/8f7fff0vf///S8/3s/d8f7ffm29ffdf+X138/a3X0vf+3f1S833/20120121vS2S1fff90vfvvvff3a1ffd9f52f20/3X///0ffffvvvv///23e//ffXp798/ffd73//S9f8//b43y5X437a/2+/pXb3m3a2ffwfffXf/839/0++/fff53aX9fff++y5X+ff68ee//1sffu0fff8/200f/4f//+/f2///e++/98Xfff3Xff4e//XffS4++/e///S++/7583f8X/+3ff0fff//3S// ff3f/vv1/+fff23ffm2//e1fffS4X2+ffp0ffpffe/a403ff4a8f9S+/a4ff30/ ff53S+/m0S/23b++/fffff/S8X4S0v3f2ff5S/18a2X9m4/+5v5f403vvvv7x3fffb1/pffe+dfS7///fff//ffXff2ffv90f425f17a43vvf353a2/S0a2f/fffb3370vf26f/+3vvf0v/vv93e+++b0///vvff/+8a101f3//3a1++/fff//S/fffX03b/a3vvvvvff7f9s1+e1fffz+/5L0/f3X//d0S+f132f++/vS4bX9v6/eX+s817++f/e+/fff2a/vv///S4ffX//u0a831/dfwfffX///vvv9/0S+X4ffyS++/Xffm2m26/+3fX++/ff4/ffd31vf/+32f801X30a+ffp37//3f4/X36f01v3fff+fS0f1///f//d7/+/s/4/S6b1ff2/+21f/e+S2eS2S7++/a/133fXff3d///5v8f203fffvvvvx1fffS81vf/f60fff//a32++1fffu5e20S2a2/s018///ff1fff2ffy6ff83e3S8+++/dfvv/8+3X8fX//2e//b4///e+fS08f///e83fffS/a8/f03b//b//30f3a/ff++/ffffXfffS7f7S8a4a3S7fffS+ffS4a4a1fff0vf++/e+Uvvff7/3ff2X0ffy3b030S8a623s0S6628003X/+X18ff++/ ffU///vvU///8X+df//11//23+1vf++/y++/a01e30/+3X+a/ffd61f/e+//ffvv4S8a/+f42ff9vf//c43fff821431/p4e/d6ee2S3e1///+/p16+2/e+S958ff8fS0a8++/+/fff//ffff0Xf6e+/9ff8++/1e1++/33Xm481232/d0a/+a5160//00vfX13++/f2+//d3vvS1fff/S5/20/+dfx13++a8/f/d912///0ffff//ff3p5/++e3X4//a8/c1f51f4//b2fffb4/+3ff///fffb10/+XvvS20//e0f1e8+b+022ff0/3d/ff5f//vX///s3f//ff9f///+d1m1+S/fS/m2174f/a3vvvvvv/b6d610vXffXf///U200++/3//s3vvX/vv0m8f1vf/S6b1//e/+S6X/pXv93fX+/vv2vf13180m8fS03S33153S3+df6/S2+//7Xvv7++/200/4/S++/3/e+//fff//3ffff14S5y++/4a7a8S6f0a/+0n6e2/+fff++/3231S5S43m3v1vf// ffX//S2y1S++/7p8eS/1f9p33+//S+/d/e1X//s/10m2/ ff0//S+S0++/ffm8/fffz3Xfff7///a3d34ff/ ff//6/uX0a3/m+d523/+c6f4142f/1f86//0vfffvv/// ff4//S4S7S7Xfffm+/vvvv9vf1vXffffX0S53/df3e/+a++/mffvvffv8fffv/6/6///2/303X6a4/S+a/+33b2+/c4XyffpXy/++/6a6X8//b9/m8/1e/s8b1fff0S8/f7p2411/ffs3b8++/c11//6ee3s/4//ffS20XffffU++/S0m0/S3fS0S02+++03v433a/+3m15///12Xb///s// ff1/+341a0e/+2a514210vf+//vvS+/U/S0//b155fff8fX6//+2ff4fvv2///++/v/76fX98ff0vf0eS+fff8f/S1518f8ffS+b/c0m0ffvvp3fff511f/+f/++/3vv99a1ff0S0/dfb06a03fffb21++df//13X//ff0S1e/U5a01vfdf3//4a7//e60vf+/2/S37/a/fff7f/S42m4/fff0fff18/fvvb0a3m8ff813437X//e/df5ff6/+a/31s2/ff0e/c2/f/ ffv//+/e1X//91X3/3X0///uS7/f376f4f2ff1e1+/ffvS6eXp58ff///v29f/+f/S5a/+m///e1/+3v1//b+/223++/e8++/m101vf5a8S0a43e+200a8a6///4X33vS8083s1S9mff/e++/+/d3y3dfXfX3vv///Xfffm0S0430030/3b4a22/Ufvv4a0vf23eXv2X3fff/+U3c+m+sXffffv9vvv962Xff/+d4//m2///+/22X//80v4++e+//1S8f/33y/p/X/vv717d///f60vf5S3s///+S8c4++m/d80vf2/+c0m8/e+c+a23b3f4ff2++3/3f+a2/12fvvf5/e8S3c43X+S6a2f///fff93S10 vf22fff9e3X/ff2++/3S/4a/0ff/// ff5S+s41fff/03X6m/ffy2y1/e/+d8ffd//d9/S+/e3/f01+e/a5X50a1++eS+5++12d//++s//4e0vf/5f//f23f/+ffffp2+ffd8f/// ff5///c1v/ffffy++/ffd/m/21/ffff3df82982/ ff3y1//++/f33Xy/+ef0X/c//v73ffx///b///d//v32+++fff9ffffvvX53df//2/ffeS80fXff3d///5vfff37p3//a2+/dfm++f1ff9///S/X0+/a1X562e3s3b+/+53/ff3S6++/e3X/+efxS43/2f+e91f/3fvv6ffr1f3e+/ ff/ff6///e/+2f+/ ff8ff120fXfff/6++c8++/c+Uv+/v3vvv43v///6/yX++/a0/9b4X2S33fff4+ ff3Xf530vf//ff4281313S7++/fff++/v///fff++/vvv3S8///ff4a/+dfmff5c2a39a/S8f9m400m0/fff0fff/S423X7f3e+/f2f/+S7f/m33140/320b33ffX8//m93++/8S/2f7ffvvv0e+/b//b4a11f26e+++/+m2/+ff522106ff0/v+df/+m//00f/+S2e+/a78a6///ff1f5a11v/7/+ff//d/+df1fff7sffm5ff8S/4a2Xvff+0m3f2Xb1ffff/+U8/eS4b4+/0m3/4a+eS3e+//3b/+f43fff818f9df0f81+c1S2b6a2fff2Xmff+fS+9e+// ffvS5fff/78ff8/Xf2ffvv5X3/c10VFd4++c11+ff5m/m82/fffzXXff5e+/e37S6ff2a7e/6a1Xffff5L++/d9ff4++/1a6a+2///9b2++/30v1df1fff5S3/+m/+c81fffv/fff/+ff5c20m/a1m///S/033p///v3//7w30///d2y5111b15/X403v33X7ffX//14352ffS+/ ffv3+l//b//v1vS65//ff3e+//s/+lffu2b3e8a4a3m8e+df7df/ff9a5fff0vf1ffvvff6ee/+/1v3/10m/Uf1+s2/1//373//31/p/df3S0/+S6f++/m2++/9s14Xvvv3c+8S3vv2+//8f32///p7++/819e++/93S5b326m2/s/e+++f3fffX3a5mS/p3++/4a2a16S2b/+ ff8a80373022///f/1vv6/m+/p//fffm+1S9c216m3S3b+/s3a/vv6000++0f+f/+f3mffs3+/vvvffy3/+d/+d4fX7eS/a/+bX3S3//fffX33/+ffffffffdfv/a2S3c/9ff/f510vfXffy38m+Xm3f//9S/3v7X8e3422ff/U/ff33s/s2X0v018+ff3v43a0/f3XffX95S2b++/e23++/fff///dfy1f//+fff5a1fff8S/42823y++e/e2f3dfm2++ffrX0a9168f//e1d/+c03S1m2//v/fff321++/f51mff81/0vf33f5b72X/f32m2//b82ff633/20vfvvffffb/S2e+S833/20f/df+m//f///8a+0ff/m9fff9fff/e+m122//3Xvv1330+/38ff0vvS+/ff6///fffm9d5c3S72S5L3f//S+/e3d/91ffy3d//603a/fff/3Xdf/d62X0S++/217116++1S41///3df+c2e39v1S9m2+/fff1U++/ffU2/1v1f/+eff//a2/S09f42/d2++0S++/fffv8a9d///s12/ff/0vfS4/S53df232///8///S3021//b0m/7S+f231/+f0X8f/+022vf0///sX7p7e///3eS381/+fffw20m/31+df//dfa12//30S+/017s00S/3y+/Xf50a80/+c/5ff2//3mS00m2vf2++f/+e3fffff0f0ff8++/b19//df//e+//a02e/+c/81S2f9//u5e83+/2/fff//ff6ff342///536f9ffu3ffS+XvU+dfn8fXfffff//ffs113X5S++/a0/+3df/f/+S1++/ff+c/c/4f8f4a13f//e9///b///33//S1m3X5v2a7S3/40a0X9U1vS3b17yS/a+S1y201//e+ff5034m/9/+ffXv5//2+++a90vf///S86/+92fvv9a212///u+c/vfffbS9Xffffb8++/3v/s///fS/c0a2ffy5fS213s/8a81S34S2+e39a3ff81m/f/+d4f0a28/f0++X4ffX3m3b4a2f8X/S23vX1///v9s13f9f9S0m1f/e+a/+fffuS2f883f3///fff3S42/+a3s3b+/3vf+a2f5LpS3fff6m340vf03b/+///3vvfS1/+effp///m/1//ffffb0a8++/8f/c932f9S+2ffS++/16/81vf2/X///ffd++/ffd7f2vf31v81a6ffd//14f//f0/73vvvXv1S3s13e//610s19pX8f3f2/ff3U/01a43p8///e/m93//vvbS93/ffffvff0e4f///5L9/4ff0f0X337a/ ff7/X4ffU4f//df/X3529vS+f4e8e1e3S9a43a3m8a/3S3S8X/f32a76f2X43S9e40vf+/fX4+/2Xfff86a01mffXfff3f9df0f443//4X3f/p22/+f0X9a8//p/a4m+/9a3+/b42f/ff4e18342S33fS0e4X331p8S2m41e//p/U3a5S/m0S22a/9m1s033m2m2mS8b23f/+c0f/4fS93ffffdfS482ff5ffz334vf+m9ffmS8/// ffvff81/0a+ ff9X1883v/++/8/m2e0f//1a2Xff/pfff93/dfm+ffe5S5S82//s0///XvX/30/ff2++e+S5ffy++/2ff7S5f33S2/a438X7a0vfvvvfU31v43f//m83vv7/vffvS54a1ffff/7fff982//+dfp6d1fS03/s/ ff+/v++/ S41fS22b+/S3b1fS2S8/2e3f533f81S01S5/X5v2m+e+d23v//p2/Ue33y2a4+/e1vf/+df5S8/++/8+7p7X1X/+/fff+/14a4+X+1Xfff7d/13+ffs///e+eff0e50fffz2d/S5d3fXff5//3f83/+ffd/ffd9f8fff4X/S0S/+8/p3y//a010X9Uvf/+e//S3a/833ffp/df5a4+///U37p48fffff8/1/+3dfv/f8+8S3vv3e4f//S35ffy3422ffU528004f/a3ffr4X4///8bvvvvb756fff/ffffdf5/ff13/a/8++/20f//b4S3f//b0vv3f7X/+d///d3m30m2++f3fff3e83//f++/fff82f++/S3f9801/f9X12X3a0a3vv7X///3c+effX22f7a63X///d9f/dfa2/+ff2a/X/+S3S8f///fff03df2/e+a62f/f///ff23a0///S/fff//fff2m0m2m3S40a0/+0a9/+3a3vS4/Xm33S3+ff5/fffy3vS/S2f8832a5S2S/m12//63e1/+c2//e6S8U+++fffw22mS5f0vS9f+X9ff/S9dfvffffX///v93U33/1s23U2S++/9vvX31e338///+2/+e1v0fX11/f/f6S5///++/fff22f3S5e2m13Xp3+/dfn3S1a9/p4+/df4e0++/ffS2S9d431/S2m/c8++c+S9m8++dfv8Xfffu4/vvx1vf00f28a/e30+d3/f2ffvv5Xff+ffX6ee20v/ ffvv2+++e0f8fvv3s/ff692a83X4e++/vX833a6/c143X0vv+86X6y/dfvvff7p///ff28++/fffy33dfS5232/+m///f0/fff0vf+///9s1s+a8/vv6/1v58XfX///p///9a3fff///dfa4eX/+3Wffvv03v4X528f8/6S8c///68a2X9vf+/vS3a4++/fff3vvf040212f0X0210e53a51fX1/+e++/3e0fff1/f//p39m3///+3//9S0664e1+/v2f/e3/ ffdf///sffUa4a40vf1e+3/S/vv4S3f1a23/s0m/+fXm3bXvv3f5e3X342ffxXfXp4a/p2S0++e1/ff42ff1vf/s1++/r2f/7y3a5/ff///dfp/ ff3a2+++U0XfffS42X11S4e803dffdf8ffd8f//ffffff7p///++/dfv+/fff0///U2U3f/33m42X93d/+Xfffb4f8ffXfff1S0a4fffS4e++/b+2+/e34/+U0b8/ffffff/s3b/+1//++/+/f43/vv1///d/+c2e///f1m/+c00vdf/f9vf9/// ffvv/vv53+/X932y3a/+a0X//fff3/fff//ff6ffXf9392++dfvvffffS7++/m1vf1/ff0f/+0f1//2S5fff013++c8fff14++/S62X8848S5y019+/03f021//a4m/b91//33f93f353ffeX30VFd4++0Xfffm/23/+fffy3+//83e/a2vf6S5S/yXv/p24119m4f4ffyS0+/m03vfff/ ff/a53+f//6Xf01vf/vv+m5bX/2X//fS7f///ffffS6ffe06mS+ff++/82+a4b132//31+/c378e+/d70/1+/d//23S8/fffdf19df8ffy+//42XvvffS8b2a54fff/v++/ffffU0m835f/+m//2++/S8f21fffm9v//++m++/9e3///2ffS1m16++effm61S5X4eS0e3e+a6f2vf//df3/ff134+/38X/0XvXff51v1e/ff9m/14a/12S62f9s17++/9fff3ff6ff2/ ffvv9e++/a0S/+d+effm6/s8m40X70a8+S3e1S6a02b6+++a03S3vX9p39m22S1++52ff4b++/140fff/X/s2e1++/03ff2+++X3f+f2S5++/ff/d4+//v/+021262/+ff2m/3++Xb0ffv7ffS+/s1vf0vX8///X4+/++/f6a00/0 vf+/e/m804/4Xv//0Xfff98X// S5ffff9+/ffvv5ffffS912S2b/ff42S33fff633a+X82///d///ff14/s1+ffdfffvv/2S+/dfy++/fff3a++/ff4f/ S3m/+/s0m/4ffv383df82fff/vv5X+effs12S6f8f+/fff5ff//f1++f2f1Xf//ff7a43ffb/S6a0///d98++/ ff+1S434S8X/++31///e++/m83S9425023Ue43a3d/+c2X81831fdf7/3e/ S1X/+///v++/ff4S+/ffzX83f0f353ffeX30ffS+/33pXp//vX00S8f7X++e88/Ue2e/e1a3/+fffvv/ffffff+/ffu4ffvvvv8/+U2y3v6a10m+m/p2++62f/fXfff31/9ff//bX/ffffvv/0///e+//X0X3///S9++0vf1++/df/ffs4+3U/fffdfp+0vf1f/S++/4/p7f9e830/dfb00/03fff9m901/fff8fffS80fXff3d/e+//83d//42ffS6e/s3/+e+0f5++/ S2eS1X2ff50vfS+fffS42+ffd6eeXf3a1//3e/df1vf4S4Xf//pXpX6//6ff6++/8+++e0e++9Xm2e//fffw24/vv93a100//ff5fffff3/a8f0//dfU43Uf41X6b/+s0VFd4+6/v/S6d5ffv4++e9411ffsXm2fffbX/X//ffffa2ff5fff+ff93/+ff61vf+/S0++f4/e2//3d8///m6ee7ff3f0v///5S+42//S7e++/882eX8+a0X0/+S23+/s0S8fff632S58+//vv/f1S4b8fff/ ff/d///a/ff+a3/+/// ff/UfX0b1vf+ff7f/vX31/+dfv//S/60ffpffvffu4X9a5X//c2/U++/S7e3ffu4fff3X7bS4a10f+3ff3++ffvv//ff2vf/+d8X358X/7X/ff3/dfy/fffvv///s06/1S+/df0/+1fS72382/S/e03++S0///dfX///Xv+b0/+e3df//+/X4//fffbS6e1S4ff433S22/d9m256ffe++ffbX++/ ffS9///fff6feX///a0f2ff4f2///2++/ ff+/ff6///ffffUf3d7S8b3++/4+//ffe2fff4S4m81++8/f0vf5f/s3df/fff68fffyX9s3vf+e81ffyS9X3S+d280S250+++82++01vffp32/Xv0Xfffvv623///m+/eS4f23b/22///f/b///ff8/a0vf/d1///6//U340ffe86S5L12X+f0f51e0+++0vfX9/S8++/++/ffd/m/2e+/fffvX8//3fffwff90vf63/b/+1Xfvvp2b+c84e1b/+d/vXvfff5a4fffff3U3++ff4//a8++/fff4+//e1/+fXffs12S0c/2y/U3ffpX32314/ff6+/2fff/a3X511m///X155///ff/s34fS3m1e++00+0ff3ffU4X/ff3S2S3fffU1fffy3vv/Xb3/ffff3++/a6e///ffX5S+S7e+X3dfn2S0S/+S3dfdfx0+ff5ff/p3f/f5ff3s// df0ff3///e++e3a4+S4S7S7/df1b3/+5/dfvvv91ff/df/ S3/Xff0fS43///1m///S/b1e/3ffv++/f8ff97S1fdfUa60f9//S++/3df7//s/+f/U++/ S+0S5y41X+12S6f8f+2vfX++dfS0V///1m236/S8X//fffU56a5/S1S411d3///e+++eff02++/ffffX4fvv2++ff1S+/fS4X6///e+//vv///2f03f30m/f3S8fff2vf4e0e0e0a/33//f4/e/p/df3S4b83fX83f///eS16d4fe+ff53n4eS0///5f///90+/b1//2///0f2a2++/m+ffS7/+d8f//ffffffpXz3S7X0Xff80f/ff/e///e2b2fff00++8a43++02++/0ff1/+dff0f37yS1e2f/+fffX++df/3ff//fffS7/7f8f+/ff52f1e29++/X+/f1f6a1fffz5ffx2++/1f86//+f4+//f0e5e016+01S9ff2m403f++/fffy/+0 vf//f7fS6+ffd7fffX03b10//b/+fff/ ff0Xf23b/+///7X1a4+c+ff33//+/ffS6S5S/033/S83dfvv3//3Xvv14f2//df//d8fX4+//p2/u322+S5e8ee++c+/S8//e14+/a0113f3/+53m+/3S/++/69df0fff1f3vvfff1S83S8fff9ff98++1vfS83++/s/6++/+ffx23fffffS7e+2/+eff3m0b2/3/e+/S7df/6//XffX2a912+++m3e4/vff///ff639S12a1/f1/e++/ffff839//b///f/10fff/1++/S6f9f++/s/6ffvvf6fXffv6eee6df201Ue0ff2/4113Xb+//p/f+S6a798//p///ffdfvv/ S7S58+340+ff//3233dfv+31f2ffvv4///e///f8vf91f/+sff1f43a4//f6S5e9+/3b1f/+23e+/a7ffe869ff32f99583///f5/S05fffXfff/+3ff5v2b412Xvv9e+011bXf73ffff3/22f28Xf1/X8//v3vv8+++3pS6/p41//+lX0ff0VFd/b4a6X1e+ffe///a4ffs3vvdfu2/3ff1/ ff1vf/ df84e3S591/+/e+++ff5S+fffvv132a632S0S2Xf0/ff22a101f/b9/++/a8///+/b//Xv2m20Xm/+4ff5a7f9a/0ff/// ff///++d4S7/+e91ffvv//d2S61a/p//22m3b9ff/+0S3S8f//ffX86ee++c83/f/+U51///9f/+a4/+3f/a+/f4a0a4a8/1932fXff++/8f/+ff3X32/S8X//ffdf/6fffvv/e+S/m8/+m/a2S0m2///4f4ff4f/6S4e6X0fvvS6a6e033a01Xv8153df90f23f/+c011e/+df0120ffff/d72a8+/dfm41vf0S0vS4+a3/e///S1m0y3vv0f0ffp3vf+/1a0a2Xvvf0ffu0m0S38fe+/f39fff+e3dff+/5d9+/ ff+e3X284e3S8/S74ff+38ffvvfffv7d60f/+m// ff03++/30VFd4++0X// dfX/a3/+2/9vv943+f1/s39//pW//s2a8++/a6Xffm8/ff0S1e2a0f8++/8S6++/vvv8/8X+/0a93a38X0/+ffvv9a0+S012a6f23X0vf0VFc//pfffu23fff91/vv9430m4e+X02/+32223a63b0ffX116ffy5f+/ffu1/+38ffu4+//a2ffX0vf01S13df3//vv/++e0f0++X2134++s//3dfm+/2X//e+/e/fff23ffm3f1e1fff1a/+effffc3///4S8m0S/+a9f9s0/+e2911b/+fffzdfn43ffS950Xf5/ffffm0vX3fdf3+/df3W3//1//U2vf///vfS+/fffS/m1eXm/s3fffvvvS5S830f7S/ ff6ffv1/+d//fffS/m++ ff1f7p7f3f/3df5161099m+/ffU++/5///eff03b0S9Xf// ff0//10m8X/+82/S7df/dfp033++/3vf6+a0ff4/+m02fff0X3++/8/+e/m3f1s//4X6fXf132e0S2m25X/eS6S2y1fX1///U0vf14a515f40vvX2/ffv//vf1U3f2vf///4f//e///d/X9S6Xy1++/b++/fffv18/f30141f23++/m1S+/fS3/1//f8+++b1/+1/S58f/S1X9/vvvv2/b3ff+/ffv/X/a4/p2m+a1///m3m/df+83df023ffXfff42++/X/ ff/333/+m++/98m+/+lS/3fffm5f//fff/1m/844a4++a8837XdfS3f4f/3a/0X3a0f30+/X//2++/fff//ff++/2m23Ufff02f//u93fS43dfn4f+/2///S62++/++c/e//8fS4ffS6ee08f0/ffyffv9e0f3dfff8ffv//++6S/94++c///vvX//d/+S20S0m++/+/Uf5ff0S/+XfffvvffzXXf411e8f2/++e80vf1ffv+1X8/+0S8ff/b1X//s/ff/X93/f+0+Uf1///+eff32/m/++S7/vv/c8375// ff4//s1m9///d1/a0vf+f2/s/f3/ffffXffz3S6b3/4a2/ffwff0vf0e15/sS9/d//S7m022ff/9ffffS6ee/X7ff///d/S30//++/e/5Lq9ffS0y0ff++/4S9df0ffu2f/sff7/df2/+m/pW//m811m4++fX961a8///p9p/Xffff1+S3fff++/d61a2fff0X+a9ff5e+/v153f36eeS0a2/+c/+df0f10++19ffffm99X20vf//X/e++/vX9ff9df/+ffv01///+a826S516m++/S7//ff3b00/+s3b/S51f/X8ff2Xm//fffy+//5X53b6ee9sX//pX9a2/+dfUf/+fff0f//df0X9e+/Uv610b6/3df/X2fff11/Uvf//1/a0ff834/+fU5d/y/ffd/7/Uf8/ffd5fff0 vf3v///f0/fff+8X1f//e01vf//8/6eeffm/fff+ ff0ffX+3f2vdf1///df823ffS9S80vfvv/d3+33b// ff40212f4fff0fffu// ffdf// df57//Xf/+6/e/+/f8a425a81e3m/pffx1+sS2S8/S20m1ff9a/+df/28a8++/a01e///a4m++94a8S6S4a6136/X333//9v/+f26f2/+f///fvv//e1ffb6e0a816a/S50+/b++/f01S+/a4///ffvS0S/3400vfU513S3d9a1++/f// ffU5a41Uvf179X35vfvv8f10fff5S0S+f131bS6Xf73++/fffS4S01d3/e/ffu+/ff0 vf/s99e1++1//vv3e///+2///eS4X9vf9//ff++/S10/+effs3/vW3b++/df40fdf91/a2m/+ffffS1fff1/// ff3U+a1fff0v3e/Xf/011v2f/+m+/fdf21ffffdf6+Xffffp11fff5d9//fvv3e08f0/ffdffX/e+/3f43/sS6++/S6df++/U3ff3p4+//Xdf//d8fffX9X0/3X//2+++fffvv2ffX0e2b3vv/ffd36ffXf/+37a/+l8m2a7/+/3e+//b1vv// ff6fff3f31///0//3///ffffffffe11e+//fffff2/+f1///116/+df1v2ff03/m237X6fffb4S5y2001X/+a80m0/0Xm3S/a62S55ffe++/a3v21+e0++/ ffXv016efd2e+//v/+ef0f83/1/dfp8+8/++/ffff1fS0eS30///Xf5///6X3++/ffff1ffU4f/s1fffb218S13fXdf+1s0++/9a6a8++/++S2a1fffv5ff0vf/+d/fS8ff5f3/Uv/e++fdf7X371X4a6a++/418X4S+/fff5f7a01ff61f++/35ffffpffS1y3vv2X//4fff//ff41a/+c3fff/+df5e++/s1//4232+ffe3m2vf81X2y3+/df81f7X31fffv/fffvv/a0S2/ffff/ff/0v/+fff7a/+3421S41///f8fff5fffw3dfU+S0a0X9//fff2ff150221e+/bS+/ff++/S++/e2254vf/S5a0b93d395a12+++m554/fff2++/d/X3/Ua12e3/df5Uvfdf99f5vfffvvffff/a2ffvv77pXbX// ff++/fffvvfS2a8ffd/a4m+/920S8a6230f3a6++/e1+Ua3d34fS3m1e++fffdf6ffvff/+e16fe1fff41+2X2//ff5dfw3f///f///8/1/+s/ff4X6fffv7S4e2f9v///3/+/v+/3dfXvX3ffxX2++/f///fffffS3/+fvvvf/6a3m/d3m30m0/yS6y3vvvX//e+// df///d16ffy+/d9a3//4Xfvv/c91+S+/s//0vf1//3v///+2/pX++/p2fvvb9df3v0vf3X0U/b1/U3++/b3X9fffvv///41/ ffv00a430/+c/5m13df+S2+3/ ffvvX/ffffp///v+//62+++ffff6ffb/28++f6X/+03ff583a+2/s018f+/mffs3+/vv/03X8ffvvS9/Xfff57++f0vvp////v14a4/m++df/ff9fffv///e14/e//c30ff9S53b516///S4X6013///ffbfffb4++/8/dfUfffX5l4m6++/ ff/ffffvv/+/1+/fff/e///f92a/+ef0/ff1vfvv+f/y3++l4++b00X+0vf/e3b/+1//++/++/+/02ff7U/ff8a3S6XfdfS7v6Xv5L11d331s3m3s831vf43dfXv3b/ffffu/d/S9d14f/a3//U34fvv3S/vvfffv7d3S8f///fff03fffb2/f0e3y8a4a3m8///9S923/a20+ef5/+f///b4+//e+//e2f/+effm41S3fff9X/v3f/+eff03X2/S7e00ff22m/ffX81/e8X40101b02b0m+fS0f1///f3y8++/+/fff5ffm3/+1m++/vvXfff74ffUf/e2++df0ff1a+df/+lffy8e+d43a+/fffX//811/ ff7f201e//20ff4S4++/fff/82/Xffx3/v010f3/2++fffvv/a/ffm4/f/+s0++/vW3/f+effvv/Uvf++/a/mffm5f3dfS7e4/S6b23//1X//8/vvv3s8a1S23/+23X/+a7++df5ffffa130f40//vv9/9/+eff//s/3X/f/13//Uv3X/b35e/v2S+d800ff/+216a6X/+1m/+e4ff/+e3vv++/XfS6S3dfdfxXfX//fffw31b0/f7S8a4a4/s017///p1ff1m1/+ff3a/+b29e++/5/f/++b5S1y8fff5//S181ffpXm8fffUf3ffb4a6Xf1e/m++f3Xp//3vvp//3b8a3m3e20e3a6a/f9v///dfb+/8+/m/a1fffv/+f4e0vf/ff/+U51m1/f/+0ff3///17fffS/p3S8a/+f42ff9vfX6+S4/f2eXdf/v9a6X7/9U2vfvvXdfXm0vf3f9S6f4Xm3XpS8a/34m+/b/a4ffdfc4XyffpXf98///v9e++/dfX830vf9a//m8m6e1a42f/+s/f233400a4/0f+e+//f430ff2++/ ff++/X9e0m17ffU5d//d///9/+m//01//+3X3m+X/ff/vv3p3vfS943eX93df+X/ S3/e141+ff8fXfff3/2221ff3fff+s+/vvS0m6fS9bX52ffvv4/Xffvv///vff0//b58a5S1++S0++/ffv//f//3fff++/dfm4a8S0vdfS0/e2001X03/s0f/+dfc00ffS6f//dfb0vf3fdf/8404ff/S8b1ff5310/dfy/fff53df+6S2Xm48123284ff3039/9S433ffffz8Xfff1Xfff/S0fff+f1b77/+e/+X/+3f/a+/df3fdfvv/df421ffdf/018++/a63e/+38+++2++S6/e+f2317b2f4f2ffv5S+/s/e+/fU/b9Xy30m0bS3dfn0ffS2S/d03++/+/3d//Xff+e4Xy2X710+f2/ff/m2mffS2///9dfvvv4/d9ffdff1vf1ff//9m++eff903S0df/c3y1S5fff003a2UvfU30f+ff//U013vv/623v1e01vf//8ffS6a43f80//4e2fS1/ffd9a19S4f33mff3/df/1Uf8vf0v/m++/y/d42++m0mS0// ff///fff2eS3eX2f42a632S5b11++14f141/0//S8S4+/0a82ffXb3p34Xy5X0f/+S2e+/a7fdf///dfvvf+lX0++/e+efff1+22/e++/fffm+fffv868++/ S9X/+3ffX9vf11vf153v/62/ S2e+e8S/f31+effS+ff/p12a/X/+S2y3U0+/924m1e1X1m1S8X13fff/u7p7p4/ ff01f///9/df20f+6X/fff+a9b2b2ffwffb++/00 vfX6//ffffm/s1fX/+83e+e13ff/c329433ffb++/ ff78Xp3//d3a4/s0/3df353m8/3ff5dfa14ff/3S/++/6901f+/X///5383f/3ffm8///fff//vvXffvfff///3Wvf/2vf/fffv+3/+effdfv60++/1ff8f29p//d/ffffu+//ffffffffvv//1++/S0S/3y+/Xf6X70a5m1S1/+effp8vf//c/3dfvv3//3/f/+0f7ff++/4a3e20e3a6a1/S93S90X21v+d039m22S3++4S80VFd0fffff3+/m8///d/S9f0f952fdfu2vf81vf//m1X///1S4b// dfS58+3v5e33b5///c1vffe+/m0e3UfS++/u/+2++ df4+/eXffb9e/+e0vfS3c1e+/dfXfffff3vvS6+/S1Xf0m8///e++/u4e18vf23ffff6S1e12///vvb03+eS9m8/v3dfUff///40S8/sS02a/+eff2m/vvffffS2yS++/S2f0 vfvv/fS0eS30///X/8Xvv//f8/f303fdf538ffd83//c1/s8dfvv/+effsS3dfb93fffm6/S0y/+df/fffu510Xffff2fdf3y3a+/13vfvv4f8e815+3b/e+/S7dfvvv8fX0e2b++/3p4/++/v//2f03fvvvvfffvvS+//fvvX3S6ee4S4+/m+S8++/e/a1S0a4fff///9S111b15/Xff2e3b2e3/+dfv2/v4X36fe6++/e+++d7e1U20f3e///12++f8e/a/+8a7/ffffpff/ffffvvX1vS+/c223/+2b03e0v8///a2399ff3Xf51/e///s3//94///2b50/v2++/fff03vvvvvf0/b/1X1/223++/e++/f21b19/+S5ffm+/e/S6e4a3+fffvv/S03+/S812328a6fdf3d1eS1S4114++/S0f3S9d14f4/S2S7++/y+2+s++14//S+X4035a0++U0X5L28/0VFfff9++/m9///d1f3++m6a3d/+m/Xv3yS/b382/+S54+ffs0Xfff8S+/vXfffX413vv3c+0X/S2e+S1e5ffe/a5a3a/y4f//131/+135ffxS2+/b8a3m2m24f3 df///10Xf//22b0fdfS8/ df/+bdfvvp/u///4/f/6ff4/X1/S6ee+/m/fffu/3vf0/+0vfXffUvXfff1a8+/a8X//v///c0vf/ S590S/y1vfS00///u/+08f0/ffyff3df9b4f9e15f21/3df0fff8///y0fffy++/1Xffvv1/+ff/ff1//4f+/+/9//ff83/+a6m++ff73//fff/ ffzdfn4f/+83fff36S3S2e8vf1y++/fffw3Xf36++b000//dfu/f7v2vf60vf///df588+/810vf1d92/a2Uf40X/+28+//m83vv7/vffvS5a1S3/ff70vf4+/0fXffv/fffvv/a/+6vf/8f83S2mS42+/vv9Xffvv1/+df8/s1f//f4+f//v0f61yX// df2f03m3ffyffz3S2S9dff/e+03S3S8f1ff5y++/ffffS16a/+4f2+//v1a4+S5f5fffm/S14/df8/9v14/fff/61/+a835a0X/+S412a83Xf//+S1b2a4a8ffd7Ue3/e3m5/+eff1vv/c++/a4a3S7dfb3+/fff/U50vX/m+9+/dfS23+S9a3m352ffS43e3m+1yXdf//83/+1///S50a1/U02b9f3X650ffvv/ffffd/+dfa41a4a2a22X360++4e1ffS8f1ff3S22XvXf//9X+0ffv0vf/b6//+8vfXvfff3vv90X3e2a+03XvvS4fffU++/ ff7ffff0m++/2+df/1b+1f3df1/+m518f9df0f4e4X10f3S6/S4+dfw31/+c3vf2/f2X///e+//+3++/fffzvv4f039ffp8vf2m2+/fXf//9//3++/fff23f3y11vf//1vv///6Xv7XfX/++31+fffuX93fXy1fffX///vvff3+/S8+fdfvU5342a1/0a9/+3fX++/df/+S01+1m02a2/s0a8m++/U3423fXdfvvX2a537f/68vfX+0ffzX7f7fS/9Xvf23/m42a0++e/+df/0ffv9ffxS3S2a0++ff/a1vfU0vf/ ff7Xff/8Xm3S/3dfdfvX30S8f/sff7/0e4X4+//s18e//+e+//2++/ffvv//p3e4m5///7p33/+df1df/ffffpffuS3++/a7U3Xb5/e+//fff++/f++/m93f94/vv/+/1+/fff0fff1//03df03//a5fff+e+/e/+ffUvf0vS9f+df7f2/bS2/+df222f///ffffpWf0ffz52f36ff++/X/m++Ua60f9//S0fffdf//S5U/+0X/eX33vS5a6/+a3e1a0VF29X/ff71a2fff039vf03b/+1//+/+S9d/+eX1eS3df8/y+//X9///a2/S0ff523ffvv3f9//535X0Xvv9S3s/4//fvvffffS8ffv9p39U0VFffs163fvvU2//24/902b++/f/+/ ff83vf3S5///ff1Uf/+f7S9X9//ffvvfffvXm38ff3a830022/s0m/+ff++/m2///e+/p2///321vf+3e40/a2f/fff33/3X+sff3ff9X0S302mff/U23f++/S3dfm0vf3f9/1Xm4e4/S5/a3/+30+/Xffu4+//a630vffff++/bS+/S32Xfffw202021//dfu2vf83e0X/b0e+++a63X///m/2//fvvv/ ff51///fS4e3y3/+effy51a1a5U+d3ffyffs2b+/ S7++/ffw34f23b/m+/a0e0vf///4ffU/// ff1eS6f//fffXffy38m+X3S+dfp0a9++ df22//eff0S2f//fffU2+/fff///5S91vfdfdfXm4/03dfu2+/S4ff//X1fffwX53ffe8fffX/8+++dfvvvf00ffpW2a0vf/e++U++/e3vf+e4Xf0b5030ff133///X0a/e++X/ df// ff90 vf3S+/U+/XffS2e1fffvv18/fvvb1339vv2+223f0m00++fffffff33b8ffd///ffff28362///S6fe/S/d/1X//8/83/X0vvX5370vf4++/ ff++/ ffXUa3e+/S7m4vfU1/f0+++/3vf6fff//f//S2a3++a4S7///0n62fff9///3y//v///u42++m0mS0/+d1S13df353e++/U2a3a0e1vf//1m/S74a3f/df+0a1S5a0/+ffffS/232//d3330vv/f//m3/ S/03f00S0b0//S6/+fffXff///fff2Xvvvffy3//m8/18//4Xm24/fffm1///X03//13ffvvvf930ff2f/S0e+++XfvvS33fX30fvv/s+df++/p1X3S/8//d3m4m6S+c8++/S8++/y++/fS6ff6/+S48eS16d28S/3b4e+/2++b13/+eff/b4f9dfv9/63m/ffv4f4f3ffv7+0X42fvv203a+c1/+ffffp2+ffdfvv0X/ff/+ef121vf2fff//ff0e6e001dfS6f/+df01sX9/+c0/3+38/+a/e3df//+/S7Vfvv//a3/++/vv/e3W++/fffdfpS9eS539/+/s43b0S8a8b///0fvv3Wb0ff5d/7ffbX00f331vf6ffe+16/y3+ff3f/fffm2/ff//d/X3/ dfvvvfvv1vff0e8a0VFd0ffdfvvS9/Xfff570a2/ ffvv9e++/a0S/+ff/+ df3a/s0X/m6m21b//fvvb++/+/df314+++dfp///v0+++//ff///02f//u93fS/f// S7S4ffS6ff7f8//8vf01a1/ff///S5a8++/9vff2vf81vf//e32230a10//6fff///v10123y++/314///++m23ff// dfy/S0VFfff9//f6fffdf/+1S6+ff6f///fff///3e/df1vf3138382+//dfS4a4fffy2/a2S0m++/d//3f1v3f7ff910f54+//df6+eff1/22/a334131/fff+3X/dfS+bS/b2++/a0S6a10m/+3X0b5ff8///df03f/m52S92Xvffx2vf0S8m4++/ff1S1++df/e0X/+eS9y2X/S+ff/p/13Uvf14///ffff839// S5/m804///2///Ue6eeff82S3ff/+ffffX///c10fdf//S7bX///+e+2fff6dfx1/U3//0X//y/42Xf/S2m2ffvv/3/+fffw01WvfvvS1d2001X/+a0a8163fS3f/2X/df0Xdfw33v9e2ffsXvf/a0f///e2//S7//e+b4f0e++df1Ue6/6a7134S+/S7++/fff++/vvfff1df3S2X/ dfvv4///vXffy/X//8/8/Uvf/p///U532f/ ff/+a01ff61f//3/f3b//X///0vf++/fffv8a3m3X9/243vv+/b/e///c4333v9vffd343S7/32++/p63b/1/m6ffvv///00m/31422m35bX2///S4e94a+fff0f230f//0e5ffvv8Xvvv//S3v0ff2++2ffdf1vf20f13f+ef55++/e3///m3bdf221237pS+6fe4+/+fXvv4X7a50m/p1a81XvXf//9X+3fff/++/m8///ffS83a3f01b0//d/3e+/df5dfa143ffff+//f///3df/df/S0f142m980m++/S1/df/S33+/3///3///0S9e+++/dfwfff8S++/fff/m7df7e//9S5///d1/e/p0++f03dfx1v++/++0fffX6+//ffffXfffX/s/X14/b4b3b22/8ffy2/+2/ff10S802///s1S/0fS201ff6//0/ ffvv9sXpfff+/ffS8b///+a3v39fff/c19m1v/2y//df4X7S+/fffffS42Xfff+ffdf/01f0/S4e23y1m/a6/f3f2a8S3df3S0vfvvX32/+a1//S63/83X++/7y2201b1a7d/Xvv/0f//e0/90b/+f/ff++/ ff8fffff///e+//vvff021m0VFd6Xv/73/9X/a4S668XffvvXpXp35vfX/ffw221///c01vffy301S8fS03++/8a4vf4/+U0b25S/3ffff//fff10a+fX///+/+/ffb/+ffff+/80a/+ffff4m3Wf43f/p2+df0m/Xv3d/Xvv1/+c0f/73/f1U4m34a/fffy52//vf///X01vdf/+a6++/ff/+m122e1fff0 vf3vdf3+f533a0S+/c++/ff42/e+/8eXffff4/d8134++/e/+2/S2m5ff0S+/fffffffU3+/83/// df4/f2a0e23vv9vf1vXf2/4+m8f2a2///0fX11/S7/4e8/ffvv51df2fX4+//ffd111W3v1e2+//94ff03d9/+e//1a+a4e1++/++/3b2///vf0fXf8fdf/7b/+2351vf4X3y5dfvvvv2e/fffvvv/b43d//01++/yff2b2fffX/+ff/b1XffzS41ffvvvfX9++m1/e+//c9dfb7dfm4f3b0++/v//3a2Uvf0f//X43S/23f/+ffs///S412ffS3e433U130vf1S0++/fS/y4vfW++/dfa4++y++/S6/S42m4/fff0fff3bdf/a1s//fX0vf311/+fU13S4bfff8++a4b41+++/6a13/+d32f/+Xm2f2X82///3S7S2S3fffU1fffy3vv/ df///fff12/f2a+/1a++/02a8++/X2a03///fffdfa1vf5S420y3vv0f0ff/92m2ff+03df52f14++/S0f3S1///83dfm7W++/vvzXXfff++/2vf//3m/S2/dffS9bW0fff81+eS4b5/+m400m+e/Xffvvvvffp/df///e++/vvvf3530e/+e+//01a+m523S4e3yX4f///22ff/U43y1XvffS0+S30///Xf5/v2381e/21ffb1m2m3S/2ff6m5025S+ffvv03vf///m+S2S81//b80S8+++c3d//d81///f5ff98f//a323a6ffe++/2130++/a2a2fX3++/y+2/+m030f70S0vf21e2/+eff32/m/++S/d8a/m0/1a1vf//S6fe/S74a00vf+/f/+e0b///u///5c/U3S4+f6m1S4a6132+f3S5e2/f//0e34f/+ffvX/03fff723/7323m37X6fffS+/S+ff91vf72e3X9XbW0XfffS/m1e+m/3U++/S3fvv5X7/fffy1e/+2++/+/f1/a/+X/0fS20m1ff6+df6++/S3bfS/e2++/d//fff3b///a7f0m1X9S5a53Xdfm0f/3m5f//681313S7//vvvffs12S0S3e51a6Xdfp2a4f4++/b9vvvf11+/a/+3ff1S+d00m2vfX0vvfffS4e3e2++/1a4a/+Uff0Xfffw2023S7+0VFd/+3e6ffvv3/a11ffXfffz3S4f4m3S+b/+m8m8+++S7++/S03dfn3/p211a7W39++S37///1U4e1ffS8f1ffb///fff/X4f9+dfx1vf0ffvv6f53/pff3m/+1s2a53ffy/S1a52///f02/++/S5Xf///df2/e/1ff20vf/+b/161++f6fe+/f/ffXp2a/+df//dfvvf0v/++ff/ ff9m/+f8+dfXff2f7XvvfffS/3++/ffff00X4S1Xf1a/Xfff//m/v9fff2m34a9381Xf///fff12/ ffX3f//S+/vvdfS7/4e815+S6S2y1f2a+S7m8///c/b1//3Uf4/f/9dfm4++a8ffe2Xffff0vf//++/337v6dfvv4m3U1S0e04/+m3f//9d323++e4/b99fff///3y6/d///5ffX3UeS6+//b00a5d20X/d3a0///d//+v0ff7f0XfS+/e0ffe8f334a11f26a/+ff/a0m+/8Xp1582/+3a2fff2ffy6a10m/+3a0ff4/+m12ff1///s/df/+eff500m/pW2++/S7v010++fS0m82/dfS8+++3a15///3X93S42/+a3vS4/Xm33S3+dfa0fffX/e2f///y+//b++/f+/p2X8f5a6m1vvfS1S6a53f0S3fff//3fffm/d2ffy22384a3ffy1Xffy++/ff+c332vf51m3W/d//f5df0X430fff1a/+e+//fff/a4+f2++/d8e+a9/y0e2a5d/+fvv0Xf03m/m0vf/ df9c2a8m31S63//X0Xff/UfS1b17df43e4m81ff43+f1/+dfv3vf7b7X3f9a72S13f3/+df14a1f/+a++/21s++/ffff/0m7b++/fff//+d/+ef18f/f/+2///a/ffm+/f//a32f///fff+1m141S5b35vf8Xff/+f33fX///S8//e3W9+sX9df8f29p/+b0+df31/+ff+e14/ffff7X/S22y++/63df1/m0f2ff4f2///e+++ffffvv/ S3/Ue3//d20f//+fffb//ffe2/f311S1f//S/3a3vv432/m6ffe80/ff0VFf8+X43a3Ua4Xb+ ffdfX/+2///a4a90/7U// df0ff4+//fffuX38X6a3m8a0+X/+c8S3a73df4032S10S+4/vS6a1Xffff54a40a8++e4S4+/a/X//a8++/fffvvdf/b0+++d4a13++3v9X/ffff///7v/+fffzdfn3/vvS3a7++e0++a7fvvffu29f8f/dfv/vvpX/a0e2a3S38vf0VFf35ff0/033W///s/e///X//m6m0f93/e0VF11S5/d/v///+/e18++/ff4a613Xyffvvb0fffS4f//51vf5b2++/s0m2a8e833//fffffy3/df1S8a4a3///fff53S7930X/e/2m4801X30S/Xvf/sff+e++//1ff10/++/S4e0eS0fS16/ff//s3+/fffy/d8+++a7fff//S6/+m+++/a+S6fff91X/dfm/ffff2S53/S8m6/+1ffvv0m2ffdf91X412+/dfS2+Xvfffv21fffwX53f1ffX2Uff/+S7vv3e4ffS7f/+eff2e+/ffUe0a5/c/0v/s/fff6/ff0m0X//fffz114fff8/Xf2ffvv/++/fff9e+//U/+2/X///p///9+ffd/vXff/+df41++e+/32+X/S2f8/v6eeff40X8/c/29dfm3X/S21f3df///U10vS+b4S+ffd4a61m/b/2//33S9U++/S833/e1vf//S9/1/+3dfv8X/3ff2++/ffffvv/e++0vf5fS2+//6ee2//d1X/dfz0a/+/vv///m83df39Xv/+1a42f4++/m9+c1S3e+/d9e+2/e+S2a+382f1/+a1023/+U0vf02322a/ff1ff1m4+fffdfv6m//2vf+/fffffff50S8b///f7df0v3m/3m20f1df23/+d436a0+/1f53++f0v/+mS6e8+++ df43+eff71Xvv62/ffdf// ff2S5S6fvv3e03++a3+fff3+4//a7vfffXfffdf+fffU++8a3m8///vff//e0b0/Xdf/+21415+/0f53vvf4S32/m6f7++6Xff/b5ffyXf/3ff71vf/+3b0e+/f7X/+23+ffff23S/ ff93S/c411S80ffdfmffu/7///+/fff/9/e1X/s14f3f2+/b/ffwffu+// S/u1//fdfpffe/X//ffff++/8a+d//ffff/1e/s8b1fff/vS8/m8m2//s0Xffy1XffX/+3357++/fffvvX3eXff/2df301UfU5S7a/3218Xfff7b++/fff//+m/e1//10vf03b/+mS4a6134S8e01Xfffffy0a/X++33/+/effvv5df52514fffvvf+ffm++/ df//d3/f+0e73e9e1fff9vvvvS/0vf2//vvf/// S8b4/ ff5/S1S0e04/+m8ffvv2vf332vf13180S/ff0f//f/U+ffd32dfnffvv93e+++m96ee+//S0ff523S4e0e+ffe9vf/fff3fff43dfX3e+/s2e2S171/ffffXffS425ffvS0//+fff22ffe+/pff0vX+ffvv3/ dfm8///b4+//e2/s1ffdf//8S+/fffm/U3df3e/fffz0S0b22a5S5ffffdfb7S31a91eXfffdfX2a/X/+S2ff3df4fffS8/df///6S0VFdf3/+a0a8+S3a/pS3///73vf0vX52f01fdf718/d34++/1a+a818318214fS+f6S4f1e+/013e+e1ffe0XvvS63++/a43f/4a1m141S837++/fff/2/f3e8f813e3/dff7U3S4+S5f/+ df///S4ffX//81vfff+d84a3X0XbXv/ffff90S4fX003S8a/+S7+/a7dfvS3+/0a/01+f+22f///a3ff//22vf2/f2m1df/+1//e13f9f3X63ff3a62/df3//ff2/X7f31UffwXfffv38+++S7S0+//a3fffX3X9/X8+fff/12e2a00/fffffvv+0152// S6+ffpfffUvf6eS9v83bfvv3m+X/ff3m0/m0f/3m20f/dfp2X4ffbS7v5X3/df1df4fS/+/71f00a40fff6fff3S4e0eS1d8/m021m8e3dfm8X/+ffs0ff/+U233d/d++/U++/U/ ff3S/X/// S/y4+fff/d93/fff821f0m401X/c9fffb0fX54X0y3vvvf2m8fvv///d//1s++/df5dfff0X/18ffe9a7fffX//811m4++fS0+/fff/+vffyX3b/32fff32a2mS8m2/S/e1f/+1S4++/X10ff//eff0a3/a3vv7++/0f41a96+3+/a/+f3Y//u8fvv7Xffe+116/2e0m+0// S38fe+/1vvXffy38+++ S3/1//fff/83d///74S4/S553X92++/ ff223+// dfX996+m6m3b1a7d6ffe9221fff//df00Xffff6/vvffy3323///.jpg'
-var _logos = document.querySelectorAll('#headerLogo,#panelLogo,#cardLogo');
-for (var _i = 0; _i < _logos.length; _i++) { _logos[_i].src = LOGO_B64; }
-</script>
+                <form id="supportForm">
+                    <!-- Clave API de Web3Forms para recibir los correos sin servidor -->
+                    <input type="hidden" name="access_key" value="TU_ACCESS_KEY_AQUI">
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nombre</label>
+                            <input type="text" name="name" placeholder="Tu nombre completo" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Correo Corporativo</label>
+                            <input type="email" name="email" placeholder="tu@empresa.com" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Asunto</label>
+                        <input type="text" name="subject" placeholder="Escribe el asunto de tu consulta" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Mensaje</label>
+                        <textarea name="message" placeholder="Describe tu problema con el mayor detalle posible..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-submit" id="submitBtn">
+                        🚀 Enviar Ticket
+                    </button>
+                </form>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Pasto animado -->
+    <div class="grass-container" id="grassContainer">
+        <div class="grass-layer grass-back" id="grassBack"></div>
+        <div class="grass-layer grass-mid" id="grassMid"></div>
+        <div class="grass-layer grass-front" id="grassFront"></div>
+    </div>
+
+    <script>
+        // ==========================================
+        // 1. LUCIÉRNAGAS DE COLORES
+        // ==========================================
+        const firefliesContainer = document.getElementById('fireflies-container');
+        const fireflyCount = 35; // Reducido levemente para mejorar rendimiento en móviles
+
+        const fireflyColors = [
+            { bg: '#d9f99d', shadow1: 'rgba(217, 249, 157, 0.8)', shadow2: 'rgba(163, 230, 53, 0.4)' },
+            { bg: '#fde047', shadow1: 'rgba(253, 224, 71, 0.8)', shadow2: 'rgba(234, 179, 8, 0.4)' },
+            { bg: '#fbbf24', shadow1: 'rgba(251, 191, 36, 0.8)', shadow2: 'rgba(217, 119, 6, 0.4)' },
+            { bg: '#a7f3d0', shadow1: 'rgba(167, 243, 208, 0.8)', shadow2: 'rgba(52, 211, 153, 0.4)' },
+            { bg: '#c4b5fd', shadow1: 'rgba(196, 181, 253, 0.8)', shadow2: 'rgba(139, 92, 246, 0.4)' },
+            { bg: '#fca5a5', shadow1: 'rgba(252, 165, 165, 0.8)', shadow2: 'rgba(248, 113, 113, 0.4)' },
+            { bg: '#93c5fd', shadow1: 'rgba(147, 197, 253, 0.8)', shadow2: 'rgba(96, 165, 250, 0.4)' },
+        ];
+
+        for (let i = 0; i < fireflyCount; i++) {
+            const firefly = document.createElement('div');
+            firefly.classList.add('firefly');
+            
+            const size = Math.random() * 5 + 2; 
+            firefly.style.width = `${size}px`;
+            firefly.style.height = `${size}px`;
+            
+            const color = fireflyColors[Math.floor(Math.random() * fireflyColors.length)];
+            firefly.style.background = color.bg;
+            firefly.style.boxShadow = `0 0 ${size + 4}px 2px ${color.shadow1}, 0 0 ${size + 12}px 5px ${color.shadow2}`;
+            
+            firefly.style.left = `${Math.random() * 100}%`;
+            firefly.style.top = `${Math.random() * 85}%`;
+            
+            const tx = (Math.random() - 0.5) * 200;
+            const ty = (Math.random() - 0.5) * 200;
+            const tx2 = (Math.random() - 0.5) * 300;
+            const ty2 = (Math.random() - 0.5) * 300;
+            firefly.style.setProperty('--tx', `${tx}px`);
+            firefly.style.setProperty('--ty', `${ty}px`);
+            firefly.style.setProperty('--tx2', `${tx2}px`);
+            firefly.style.setProperty('--ty2', `${ty2}px`);
+            
+            const duration = Math.random() * 15 + 10;
+            const delay = Math.random() * 10;
+            firefly.style.animationDuration = `${duration}s`;
+            firefly.style.animationDelay = `${delay}s`;
+            
+            firefliesContainer.appendChild(firefly);
+        }
+
+        // ==========================================
+        // 2. GENERAR PASTO
+        // ==========================================
+        function generateGrass(layerId, count, heightRange, colorRange) {
+            const layer = document.getElementById(layerId);
+            
+            for (let i = 0; i < count; i++) {
+                const blade = document.createElement('div');
+                blade.classList.add('grass-blade');
+                
+                const height = Math.random() * (heightRange[1] - heightRange[0]) + heightRange[0];
+                const width = Math.random() * 4 + 3;
+                const left = (i / count) * 100 + (Math.random() - 0.5) * 2;
+                
+                const hue = colorRange[0] + Math.random() * (colorRange[1] - colorRange[0]);
+                const saturation = 40 + Math.random() * 30;
+                const lightness = colorRange[2] + Math.random() * 15;
+                
+                blade.style.height = `${height}px`;
+                blade.style.width = `${width}px`;
+                blade.style.left = `${left}%`;
+                blade.style.background = `linear-gradient(to top, hsl(${hue}, ${saturation}%, ${lightness - 10}%), hsl(${hue}, ${saturation}%, ${lightness}%))`;
+                
+                const delay = Math.random() * 3;
+                const duration = 3 + Math.random() * 2;
+                blade.style.animationDelay = `${delay}s`;
+                blade.style.animationDuration = `${duration}s`;
+                
+                layer.appendChild(blade);
+            }
+        }
+
+        generateGrass('grassBack', 100, [60, 100], [100, 130, 20]);
+        generateGrass('grassMid', 80, [50, 85], [110, 140, 25]);
+        generateGrass('grassFront', 60, [40, 70], [120, 150, 30]);
+
+        // ==========================================
+        // 3. PANEL DE CONTACTO
+        // ==========================================
+        const btnOpenContact = document.getElementById('btnOpenContact');
+        const contactPanel = document.getElementById('contactPanel');
+        const panelOverlay = document.getElementById('panelOverlay');
+        const closePanel = document.getElementById('closePanel');
+
+        function openPanel() {
+            contactPanel.classList.add('show');
+            panelOverlay.classList.add('show');
+        }
+
+        function closePanelFn() {
+            contactPanel.classList.remove('show');
+            panelOverlay.classList.remove('show');
+        }
+
+        btnOpenContact.addEventListener('click', openPanel);
+        closePanel.addEventListener('click', closePanelFn);
+        panelOverlay.addEventListener('click', closePanelFn);
+
+        // ==========================================
+        // 4. COPIAR CORREO
+        // ==========================================
+        const copyEmailCard = document.getElementById('copyEmailCard');
+        const copyToast = document.getElementById('copyToast');
+        const emailToCopy = 'jose.valdes@synergiabio.com';
+
+        copyEmailCard.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(emailToCopy);
+                copyToast.classList.add('show');
+                const hint = copyEmailCard.querySelector('.copy-hint');
+                hint.textContent = '✅ Copiado';
+                hint.style.opacity = '1';
+                setTimeout(() => {
+                    copyToast.classList.remove('show');
+                    hint.textContent = '📋 Copiar';
+                    hint.style.opacity = '';
+                }, 2500);
+            } catch (err) {
+                const textArea = document.createElement('textarea');
+                textArea.value = emailToCopy;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                copyToast.classList.add('show');
+                setTimeout(() => copyToast.classList.remove('show'), 2500);
+            }
+        });
+
+        // ==========================================
+        // 5. ENVÍO REAL DEL FORMULARIO
+        // ==========================================
+        const form = document.getElementById('supportForm');
+        const submitBtn = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            submitBtn.disabled = true;
+            submitBtn.textContent = '⏳ Enviando ticket...';
+
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch('https://api.web3forms.com/submit', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    window.location.href = 'gracias.html';
+                } else {
+                    alert('Hubo un error al enviar el ticket. Revisa tu clave API.');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = '🚀 Enviar Ticket';
+                }
+            } catch (error) {
+                alert('Error de conexión. Revisa tu acceso a internet.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = '🚀 Enviar Ticket';
+            }
+        });
+    </script>
+
 </body>
 </html>
