@@ -683,7 +683,7 @@
             submitBtn.textContent = '⏳ Enviando ticket...';
 
             const formData = new FormData(form);
-
+            formData.set('from_name', formData.get('name'));
             try {
                 const response = await fetch('https://api.web3forms.com/submit', {
                     method: 'POST',
