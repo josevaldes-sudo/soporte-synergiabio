@@ -493,8 +493,6 @@
                 </div>
 
                 <form id="supportForm">
-                    <!-- Clave API de Web3Forms para recibir los correos sin servidor -->
-                    <input type="hidden" name="access_key" value="a017b9d0-c04a-44ba-ba32-ef174d5192e7">
 
                     <div class="form-row">
                         <div class="form-group">
@@ -671,8 +669,8 @@
             }
         });
 
-        // ==========================================
-        // 5. ENVÍO REAL DEL FORMULARIO
+       // ==========================================
+        // 5. ENVÍO DIRECTO A MAKE.COM
         // ==========================================
         const form = document.getElementById('supportForm');
         const submitBtn = document.getElementById('submitBtn');
@@ -682,18 +680,26 @@
             submitBtn.disabled = true;
             submitBtn.textContent = '⏳ Enviando ticket...';
 
-            const formData = new FormData(form);
-            formData.set('from_name', formData.get('name'));
+            const payload = {
+                name: form.elements['name'].value.trim(),
+                email: form.elements['email'].value.trim(),
+                subject: form.elements['subject'].value.trim(),
+                message: form.elements['message'].value.trim()
+            };
+
             try {
-                const response = await fetch('https://api.web3forms.com/submit', {
+                const response = await fetch('https://hook.us2.make.com/w4an72vnituh82cw1jhqd4s3xo2zlwuk', {
                     method: 'POST',
-                    body: formData
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
                 });
 
                 if (response.ok) {
                     window.location.href = 'gracias.html';
                 } else {
-                    alert('Hubo un error al enviar el ticket. Revisa tu clave API.');
+                    alert('Hubo un error al procesar el ticket en el sistema.');
                     submitBtn.disabled = false;
                     submitBtn.textContent = '🚀 Enviar Ticket';
                 }
@@ -704,6 +710,5 @@
             }
         });
     </script>
-
 </body>
 </html>
